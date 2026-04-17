@@ -2,6 +2,8 @@
 
 A **production-ready, full-stack healthcare management platform** for Ayurvedic clinics with multi-hospital support, role-based dashboards, and enterprise-grade UI/UX.
 
+Line changed by jay.
+
 ## ✨ Features
 
 ### 🔐 Authentication & Access Control
