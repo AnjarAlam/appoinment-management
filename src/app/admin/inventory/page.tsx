@@ -135,58 +135,56 @@ export default function InventoryPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0a0f1c] p-4 lg:p-6">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0a0f1c] p-3 lg:p-4">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
         <div>
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-emerald-600 rounded-xl flex items-center justify-center">
-              <Package className="text-white" size={18} />
+            <div className="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center">
+              <Package className="text-white" size={16} />
             </div>
             <div>
               <p className="text-emerald-600 dark:text-emerald-400 text-xs font-medium tracking-wider">PHARMACY</p>
-              <h1 className="text-3xl font-semibold text-slate-900 dark:text-white">Inventory</h1>
+              <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">Inventory</h1>
             </div>
           </div>
-          <p className="text-slate-500 dark:text-slate-400 text-sm mt-0.5 pl-11">Manage medicines, stock, and disease assignments</p>
+          <p className="text-slate-500 dark:text-slate-400 text-xs mt-0.5 pl-10">Manage medicines, stock, and disease assignments</p>
         </div>
 
         <button
           onClick={() => { resetForm(); setShowAddModal(true); }}
-          className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl font-medium shadow-lg text-sm transition-all"
+          className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-medium shadow-sm text-sm transition-all"
         >
-          <Plus size={18} />
+          <Plus size={16} />
           Add Medicine
         </button>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div className="bg-white dark:bg-slate-900 rounded-lg p-3 border border-slate-200 dark:border-slate-800">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-5">
+        <div className="bg-white dark:bg-slate-900 rounded-lg p-2 border border-slate-200 dark:border-slate-800">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Total Medicines</p>
-              <h3 className="text-2xl font-semibold text-slate-900 dark:text-white mt-1">{medicines.length}</h3>
+              <p className="text-[10px] text-slate-500 dark:text-slate-400">Total Medicines</p>
+              <h3 className="text-xl font-semibold text-slate-900 dark:text-white mt-1">{medicines.length}</h3>
             </div>
             <Package className="text-emerald-600" size={24} />
           </div>
         </div>
-
-        <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl p-3 border border-slate-200 dark:border-slate-800">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-500 dark:text-slate-400">Low Stock (&lt;20)</p>
-              <h3 className="text-3xl font-semibold text-amber-600 mt-2">{medicines.filter(m => m.quantity < 20).length}</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Low Stock (&lt;20)</p>
+              <h3 className="text-2xl font-semibold text-amber-600 mt-2">{medicines.filter(m => m.quantity < 20).length}</h3>
             </div>
             <AlertCircle className="text-amber-600" size={32} />
           </div>
         </div>
-
-        <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl p-3 border border-slate-200 dark:border-slate-800">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-500 dark:text-slate-400">Total Value</p>
-              <h3 className="text-3xl font-semibold text-emerald-600 mt-2">₹{medicines.reduce((acc, m) => acc + ((m.price || 0) * m.quantity), 0)}</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Total Value</p>
+              <h3 className="text-2xl font-semibold text-emerald-600 mt-2">₹{medicines.reduce((acc, m) => acc + ((m.price || 0) * m.quantity), 0)}</h3>
             </div>
             <Check className="text-emerald-600" size={32} />
           </div>
@@ -194,17 +192,17 @@ export default function InventoryPage() {
       </div>
 
       {/* Medicine Grid */}
-      <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         {medicines.map((medicine) => (
           <article
             key={medicine.id}
-            className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+            className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5"
           >
             {/* Header */}
             <div className="flex items-start justify-between mb-4">
               <div>
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-white">{medicine.name}</h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">{medicine.manufacturer || 'N/A'}</p>
+                <h3 className="text-base font-semibold text-slate-900 dark:text-white">{medicine.name}</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{medicine.manufacturer || 'N/A'}</p>
               </div>
               <div className="flex items-center gap-2">
                 <button
@@ -223,10 +221,10 @@ export default function InventoryPage() {
             </div>
 
             {/* Quantity Bar */}
-            <div className="mb-4">
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-sm font-medium text-slate-600 dark:text-slate-300">Stock</span>
-                <span className={`text-sm font-semibold ${medicine.quantity < 20 ? 'text-red-600' : 'text-emerald-600'}`}>
+            <div className="mb-3">
+              <div className="flex justify-between items-center mb-1">
+                <span className="text-xs font-medium text-slate-600 dark:text-slate-300">Stock</span>
+                <span className={`text-xs font-semibold ${medicine.quantity < 20 ? 'text-red-600' : 'text-emerald-600'}`}>
                   {medicine.quantity} {medicine.unit}
                 </span>
               </div>
@@ -240,20 +238,20 @@ export default function InventoryPage() {
 
             {/* Price */}
             {medicine.price && (
-              <div className="mb-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
+              <div className="mb-3 p-2 bg-slate-50 dark:bg-slate-800 rounded-lg">
                 <p className="text-xs text-slate-500 dark:text-slate-400">Price per unit</p>
-                <p className="text-lg font-semibold text-emerald-600">₹{medicine.price}</p>
+                <p className="text-base font-semibold text-emerald-600">₹{medicine.price}</p>
               </div>
             )}
 
             {/* Diseases */}
-            <div className="mb-4">
+            <div className="mb-3">
               <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">For Diseases</p>
               <div className="flex flex-wrap gap-2">
                 {medicine.diseases.map(disease => (
                   <span
                     key={disease}
-                    className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300 text-xs font-medium"
+                    className="px-2 py-1 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300 text-[11px] font-medium"
                   >
                     {disease}
                   </span>
@@ -279,33 +277,33 @@ export default function InventoryPage() {
             onSubmit={handleAddMedicine}
             className="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-2xl shadow-2xl overflow-hidden"
           >
-            <div className="px-8 pt-8 pb-6">
-              <div className="flex justify-between items-center mb-8">
+            <div className="px-6 pt-6 pb-5">
+              <div className="flex justify-between items-center mb-4">
                 <div>
-                  <h2 className="text-2xl font-semibold">{editingId ? 'Edit Medicine' : 'Add New Medicine'}</h2>
-                  <p className="text-slate-500 dark:text-slate-400 mt-1">Enter medicine details and disease assignments</p>
+                  <h2 className="text-xl font-semibold">{editingId ? 'Edit Medicine' : 'Add New Medicine'}</h2>
+                  <p className="text-slate-500 dark:text-slate-400 mt-0.5 text-sm">Enter medicine details and disease assignments</p>
                 </div>
                 <button
                   type="button"
                   onClick={handleCloseModal}
                   className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition p-2"
                 >
-                  <X size={24} />
+                  <X size={20} />
                 </button>
               </div>
 
-              <div className="space-y-5">
+              <div className="space-y-4">
                 {/* Name */}
                 <input
                   placeholder="Medicine Name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
-                  className="w-full px-4 py-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:border-emerald-500 transition"
+                  className="w-full px-3 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:border-emerald-500 transition text-sm"
                 />
 
                 {/* Quantity & Unit */}
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-2">
                   <input
                     type="number"
                     placeholder="Quantity"
@@ -313,12 +311,12 @@ export default function InventoryPage() {
                     onChange={(e) => setQuantity(e.target.value === '' ? '' : Number(e.target.value))}
                     required
                     min="1"
-                    className="w-full px-4 py-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:border-emerald-500 transition"
+                    className="w-full px-3 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:border-emerald-500 transition text-sm"
                   />
                   <select
                     value={unit}
                     onChange={(e) => setUnit(e.target.value)}
-                    className="w-full px-4 py-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:border-emerald-500 transition"
+                    className="w-full px-3 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:border-emerald-500 transition text-sm"
                   >
                     <option value="kg">kg</option>
                     <option value="liters">liters</option>
@@ -329,19 +327,19 @@ export default function InventoryPage() {
                 </div>
 
                 {/* Manufacturer & Price */}
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-2">
                   <input
                     placeholder="Manufacturer"
                     value={manufacturer}
                     onChange={(e) => setManufacturer(e.target.value)}
-                    className="w-full px-4 py-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:border-emerald-500 transition"
+                    className="w-full px-3 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:border-emerald-500 transition text-sm"
                   />
                   <input
                     type="number"
                     placeholder="Price per unit (₹)"
                     value={price}
                     onChange={(e) => setPrice(e.target.value === '' ? '' : Number(e.target.value))}
-                    className="w-full px-4 py-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:border-emerald-500 transition"
+                    className="w-full px-3 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:border-emerald-500 transition text-sm"
                   />
                 </div>
 
@@ -350,19 +348,19 @@ export default function InventoryPage() {
                   type="date"
                   value={expiryDate}
                   onChange={(e) => setExpiryDate(e.target.value)}
-                  className="w-full px-4 py-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:border-emerald-500 transition"
+                  className="w-full px-3 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:border-emerald-500 transition text-sm"
                 />
 
                 {/* Disease Selection */}
                 <div>
                   <label className="block text-sm font-medium text-slate-900 dark:text-white mb-3">Assign to Diseases</label>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                     {diseasesList.map(disease => (
                       <button
                         key={disease}
                         type="button"
                         onClick={() => handleToggleDisease(disease)}
-                        className={`px-4 py-2.5 rounded-2xl transition font-medium ${
+                        className={`px-3 py-2 rounded-2xl transition font-medium ${
                           diseases.includes(disease)
                             ? 'bg-emerald-600 text-white'
                             : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
@@ -377,17 +375,17 @@ export default function InventoryPage() {
               </div>
             </div>
 
-            <div className="border-t dark:border-slate-800 px-8 py-6 flex gap-4 bg-slate-50 dark:bg-slate-950">
+            <div className="border-t dark:border-slate-800 px-6 py-4 flex gap-3 bg-slate-50 dark:bg-slate-950">
               <button
                 type="button"
                 onClick={handleCloseModal}
-                className="flex-1 py-3.5 rounded-2xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 font-medium transition"
+                className="flex-1 py-2.5 bg-slate-300 hover:bg-emerald-700 hover:text-white active:bg-slate-500 text-slate-700 dark:text-slate-300 font-semibold rounded-2xl transition text-sm"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="flex-1 py-3.5 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold rounded-2xl transition"
+                className="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold rounded-2xl transition text-sm"
               >
                 {editingId ? 'Update Medicine' : 'Add Medicine'}
               </button>

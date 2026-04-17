@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { Plus, Edit3, Clock } from 'lucide-react';
+import Image from 'next/image';
+import { Plus, Edit2, Clock, Users, Calendar } from 'lucide-react';
 
 export default function TherapyPlansPage() {
   const [activeTab, setActiveTab] = useState<'active' | 'archived'>('active');
@@ -11,8 +12,10 @@ export default function TherapyPlansPage() {
       id: 'T-001',
       title: "Abhyanga",
       category: "DETOXIFICATION",
+      type: 'Ayurvedic',
+      frequency: 'Daily',
       duration: "60 Min",
-      description: "Full body rhythmic massage using herb-infused oils tailored to specific doshas. Promotes lymphatic drainage and stress relief.",
+      description: "Full body rhythmic massage using herb-infused oils tailored to specific doshas. Promotes lymphatic drainage and deep relaxation.",
       doshas: ["V", "P", "K"],
       img: 141,
       price: 120
@@ -21,8 +24,10 @@ export default function TherapyPlansPage() {
       id: 'T-002',
       title: "Shirodhara",
       category: "MENTAL HEALTH",
+      type: 'Mental',
+      frequency: 'Daily',
       duration: "45 Min",
-      description: "Continuous pouring of medicated liquids on the forehead. Excellent for insomnia, anxiety, and neurological equilibrium.",
+      description: "Continuous pouring of warm medicated oil on the forehead to calm the nervous system and relieve stress & insomnia.",
       doshas: ["V", "P"],
       img: 142,
       price: 95
@@ -31,8 +36,10 @@ export default function TherapyPlansPage() {
       id: 'T-003',
       title: "Panchakarma",
       category: "IMMUNITY",
+      type: 'Ayurvedic',
+      frequency: 'Weekly',
       duration: "5-21 Days",
-      description: "The cornerstone of Ayurvedic cleansing. A multi-stage process involving specialized diets and intense purification therapies.",
+      description: "Comprehensive Ayurvedic detoxification and rejuvenation program involving multiple therapies and dietary regulation.",
       doshas: ["V", "P", "K"],
       img: 143,
       price: 850
@@ -41,336 +48,413 @@ export default function TherapyPlansPage() {
 
   const [therapies, setTherapies] = useState(initialTherapies);
   const [showModal, setShowModal] = useState(false);
+
+  // Form States
   const [newTitle, setNewTitle] = useState('');
   const [newDuration, setNewDuration] = useState('60 Min');
-//   const [newCategory, setNewCategory] = useState('General');
-//   const [newImageId, setNewImageId] = useState('200');
-  const [newPrice, setNewPrice] = useState('0');
+  const [newType, setNewType] = useState<'Physical' | 'Mental' | 'Ayurvedic' | 'Rehab'>('Ayurvedic');
+  const [newFrequency, setNewFrequency] = useState<'Daily' | 'Weekly'>('Daily');
+  const [newPrice, setNewPrice] = useState('');
   const [newDescription, setNewDescription] = useState('');
-
-  const [newImageFile, setNewImageFile] = useState<File | null>(null);
   const [newImagePreview, setNewImagePreview] = useState<string | null>(null);
+  const [newImageFile, setNewImageFile] = useState<File | null>(null);
   const [newDifficulty, setNewDifficulty] = useState('Moderate');
-  const [newTags, setNewTags] = useState('');
   const [newCategory, setNewCategory] = useState('General');
   const [doshaV, setDoshaV] = useState(false);
   const [doshaP, setDoshaP] = useState(false);
   const [doshaK, setDoshaK] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+
+  const handleCreateTherapy = () => {
+    if (!newTitle.trim()) return;
+
+    const doshasArr: string[] = [];
+    if (doshaV) doshasArr.push('V');
+    if (doshaP) doshasArr.push('P');
+    if (doshaK) doshasArr.push('K');
+
+    if (editingId) {
+      // update existing
+      setTherapies((prev) =>
+        prev.map((t) =>
+          t.id === editingId
+            ? {
+                ...t,
+                title: newTitle.trim(),
+                category: newCategory,
+                type: newType,
+                frequency: newFrequency,
+                duration: newDuration,
+                description: newDescription.trim(),
+                doshas: doshasArr,
+                price: parseFloat(newPrice) || 0,
+              }
+            : t
+        )
+      );
+    } else {
+      const newItem = {
+        id: `T-${Date.now().toString().slice(-6)}`,
+        title: newTitle.trim(),
+        category: newCategory,
+        type: newType,
+        frequency: newFrequency,
+        duration: newDuration,
+        description: newDescription.trim(),
+        doshas: doshasArr,
+        img: 200,
+        price: parseFloat(newPrice) || 0,
+      };
+
+      setTherapies([newItem, ...therapies]);
+    }
+
+    // Reset form
+    setNewTitle('');
+    setNewDuration('60 Min');
+    setNewType('Ayurvedic');
+    setNewFrequency('Daily');
+    setNewPrice('');
+    setNewDescription('');
+    setNewImagePreview(null);
+    setNewImageFile(null);
+    setDoshaV(false);
+    setDoshaP(false);
+    setDoshaK(false);
+    setEditingId(null);
+    setShowModal(false);
+  };
+
+  const openForCreate = () => {
+    setEditingId(null);
+    setNewTitle('');
+    setNewDuration('60 Min');
+    setNewType('Ayurvedic');
+    setNewFrequency('Daily');
+    setNewPrice('');
+    setNewDescription('');
+    setNewImagePreview(null);
+    setNewImageFile(null);
+    setDoshaV(false);
+    setDoshaP(false);
+    setDoshaK(false);
+    setShowModal(true);
+  };
+
+  const openForEdit = (therapyId: string) => {
+    const t = therapies.find((x) => x.id === therapyId);
+    if (!t) return;
+    setEditingId(t.id);
+    setNewTitle(t.title || '');
+    setNewDuration(t.duration || '60 Min');
+    setNewType((t as any).type || 'Ayurvedic');
+    setNewFrequency((t as any).frequency || 'Daily');
+    setNewPrice((t as any).price ? String((t as any).price) : '');
+    setNewDescription(t.description || '');
+    setNewImagePreview(t.img ? `https://picsum.photos/id/${t.img}/800/600` : null);
+    setDoshaV(t.doshas?.includes('V'));
+    setDoshaP(t.doshas?.includes('P'));
+    setDoshaK(t.doshas?.includes('K'));
+    setShowModal(true);
+  };
+
+  const typeColors: Record<string, string> = {
+    'Ayurvedic': 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
+    'Physical': 'bg-blue-500/10 text-blue-400 border-blue-500/30',
+    'Mental': 'bg-purple-500/10 text-purple-400 border-purple-500/30',
+    'Rehab': 'bg-rose-500/10 text-rose-400 border-rose-500/30',
+  };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0a0d14] text-slate-900 dark:text-white p-6 lg:p-8">
+    <div className="min-h-screen bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-200 p-8 lg:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-4">
           <div>
-            <p className="text-emerald-500 text-xs font-medium tracking-widest">MANAGEMENT</p>
-            <h1 className="text-3xl font-semibold mt-1">Therapy Plans</h1>
+            <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-emerald-600 rounded-xl flex items-center justify-center">
+                <Clock className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <p className="text-emerald-500 text-xs font-semibold tracking-[2px] uppercase">WELLNESS MANAGEMENT</p>
+                <h1 className="text-3xl font-semibold text-slate-900 dark:text-white mt-1">Therapy Plans</h1>
+              </div>
+            </div>
           </div>
 
-          <button onClick={() => setShowModal(true)} className="bg-emerald-600 hover:bg-emerald-500 px-6 py-3 rounded-2xl flex items-center gap-2 text-sm font-medium transition-all">
-            <Plus size={18} /> Create New Template
+          <button
+            onClick={openForCreate}
+            className="bg-emerald-600 hover:bg-emerald-500 transition-all flex items-center gap-3 px-6 py-3 rounded-2xl font-medium shadow-lg dark:shadow-emerald-950/30"
+          >
+            <Plus size={20} />
+            Create New Therapy
           </button>
         </div>
-
-        {/* Create Template Modal */}
-    {showModal && (
-  <div className="fixed inset-0 z-50 flex items-center justify-center">
-
-    {/* Overlay */}
-    <div 
-      className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-      onClick={() => setShowModal(false)}
-    />
-
-    {/* Modal */}
-    <div className="relative w-full max-w-2xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl z-10 max-h-[90vh] overflow-y-auto">
-
-      {/* Header */}
-      <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700">
-        <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
-          Create Therapy Template
-        </h3>
-        <button onClick={() => setShowModal(false)} className="text-slate-400 hover:text-red-500 text-lg">
-          ✕
-        </button>
-      </div>
-
-      {/* Body */}
-      <div className="p-6 space-y-5">
-
-        {/* Card 1 */}
-        <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-700 space-y-4">
-          <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-            Basic Information
-          </h4>
-
-          <div>
-            <label className="text-xs text-slate-500">Therapy Name</label>
-            <input
-              value={newTitle}
-              onChange={(e) => setNewTitle(e.target.value)}
-              className="w-full mt-1 p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-emerald-500 outline-none"
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="text-xs text-slate-500">Duration</label>
-              <input
-                value={newDuration}
-                onChange={(e) => setNewDuration(e.target.value)}
-                className="w-full mt-1 p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800 border"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Card 2 - Image */}
-        <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-700 space-y-4">
-          <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-            Therapy Image
-          </h4>
-
-          <div className="grid grid-cols-2 gap-4 items-center">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                const f = e.target.files?.[0];
-                if (f) {
-                  setNewImageFile(f);
-                  setNewImagePreview(URL.createObjectURL(f));
-                }
-              }}
-              className="text-sm"
-            />
-
-            {newImagePreview ? (
-              <img
-                src={newImagePreview}
-                alt="preview"
-                className="w-full h-28 object-cover rounded-lg border"
-              />
-            ) : (
-              <div className="h-28 flex items-center justify-center border border-dashed rounded-lg text-slate-400 text-sm">
-                No Image
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Card 3 */}
-        <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-700 space-y-4">
-          <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-            Pricing & Difficulty
-          </h4>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="text-xs text-slate-500">Price</label>
-              <input
-                value={newPrice}
-                onChange={(e) => setNewPrice(e.target.value)}
-                className="w-full mt-1 p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800 border"
-              />
-            </div>
-
-            <div>
-              <label className="text-xs text-slate-500">Difficulty</label>
-              <select
-                value={newDifficulty}
-                onChange={(e) => setNewDifficulty(e.target.value)}
-                className="w-full mt-1 p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800 border"
-              >
-                <option>Low</option>
-                <option>Moderate</option>
-                <option>High</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        {/* Description */}
-        <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-700">
-          <label className="text-xs text-slate-500">Description</label>
-          <textarea
-            value={newDescription}
-            onChange={(e) => setNewDescription(e.target.value)}
-            rows={3}
-            className="w-full mt-1 p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800 border"
-          />
-        </div>
-
-        {/* Tags */}
-        <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-700">
-          <label className="text-xs text-slate-500">Tags</label>
-          <input
-            value={newTags}
-            onChange={(e) => setNewTags(e.target.value)}
-            className="w-full mt-1 p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800 border"
-          />
-        </div>
-      </div>
-
-      {/* Footer */}
-      <div className="flex justify-between items-center px-6 py-4 border-t border-slate-200 dark:border-slate-700">
-
-        <button
-          onClick={() => setShowModal(false)}
-          className="text-sm text-slate-500 hover:text-red-500"
-        >
-          Cancel
-        </button>
-
-        <button
-          onClick={() => {
-            const id = `T-${Date.now()}`;
-            const newItem = {
-              id,
-              title: newTitle || 'Untitled Therapy',
-              category: newCategory || 'General',
-              duration: newDuration || '60 Min',
-              description: newDescription || '',
-              doshas: [],
-              img: 200,
-              price: parseFloat(newPrice) || 0
-            };
-
-            setTherapies([newItem, ...therapies]);
-
-            setNewTitle('');
-            setNewDuration('60 Min');
-            setNewCategory('General');
-            setNewPrice('0');
-            setNewDescription('');
-
-            setShowModal(false);
-          }}
-          className="px-5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-md"
-        >
-          Create Therapy
-        </button>
-
-      </div>
-    </div>
-  </div>
-)}
 
         {/* Tabs */}
-        <div className="flex gap-2 mb-8 border-b border-slate-800 pb-1">
-          <button 
+        <div className="flex border-b border-slate-800 mb-6">
+          <button
             onClick={() => setActiveTab('active')}
-            className={`px-6 py-2.5 rounded-xl text-sm font-medium transition-all ${activeTab === 'active' ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:text-white'}`}
+            className={`px-8 py-4 text-sm font-semibold transition-all border-b-2 ${
+              activeTab === 'active'
+                ? 'border-emerald-500 text-emerald-400'
+                : 'border-transparent text-slate-400 hover:text-slate-200'
+            }`}
           >
-            Active (12)
+            Active Therapies (12)
           </button>
-          <button 
+          <button
             onClick={() => setActiveTab('archived')}
-            className={`px-6 py-2.5 rounded-xl text-sm font-medium transition-all ${activeTab === 'archived' ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:text-white'}`}
+            className={`px-8 py-4 text-sm font-semibold transition-all border-b-2 ${
+              activeTab === 'archived'
+                ? 'border-emerald-500 text-emerald-400'
+                : 'border-transparent text-slate-400 hover:text-slate-200'
+            }`}
           >
             Archived (4)
           </button>
         </div>
 
-        {/* Therapy Catalog */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {therapies.map((therapy, i) => (
-            <div key={i} className="bg-slate-900 rounded-3xl overflow-hidden border border-slate-700 hover:border-emerald-600 transition-all group">
-              <div 
-                className="h-48 bg-cover bg-center relative"
-                style={{ backgroundImage: `url('https://picsum.photos/id/${40 + i}/700/400')` }}
+        {/* Therapy Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {therapies.map((therapy) => {
+            const typeColor = typeColors[therapy.type] || typeColors['Ayurvedic'];
+
+            return (
+              <div
+                key={therapy.id}
+                className="group bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-200 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:border-emerald-600/50 transition-all duration-300 hover:shadow-2xl dark:hover:shadow-emerald-950/50"
               >
-                <div className="absolute top-4 right-4 bg-black/70 px-3 py-1 text-xs rounded-full font-medium">
-                  {therapy.duration}
-                </div>
-              </div>
+                {/* Image */}
+                <div className="relative h-56">
+                  <Image
+                    src={`https://picsum.photos/id/${therapy.img || 141}/800/600`}
+                    alt={therapy.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-black/6 to-transparent dark:from-black/80 dark:via-black/30" />
 
-              <div className="p-6">
-                <div className="uppercase text-[10px] tracking-[1px] text-emerald-500 mb-1">{therapy.category}</div>
-                <h3 className="text-lg font-semibold mb-3">{therapy.title}</h3>
-                
-                <p className="text-slate-400 text-sm leading-relaxed line-clamp-3 mb-6">
-                  {therapy.description}
-                </p>
-
-                <div className="flex items-center justify-between">
-                  <div className="flex gap-1">
-                    {therapy.doshas.map((d, idx) => (
-                      <div key={idx} className="text-xs bg-slate-800 px-2.5 py-1 rounded font-mono">
-                        {d}
-                      </div>
-                    ))}
+                  {/* Duration Badge */}
+                  <div className="absolute top-4 right-4 px-4 py-1.5 rounded-2xl text-xs font-medium flex items-center gap-2 bg-white/90 text-slate-900 dark:bg-black/70 dark:text-white backdrop-blur-sm">
+                    <Clock size={14} />
+                    {therapy.duration}
                   </div>
-                  <button className="flex items-center gap-1.5 text-emerald-500 hover:text-emerald-400 text-xs font-medium">
-                    Edit <Edit3 size={14} />
+                </div>
+
+                {/* Content */}
+                <div className="p-6 space-y-5">
+                  <div>
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-xl font-semibold text-slate-900 dark:text-white">{therapy.title}</h3>
+                        <span className="text-emerald-600 dark:text-emerald-400 font-mono text-sm">₹{therapy.price}</span>
+                      </div>
+
+                      <div className={`inline-flex items-center gap-2 px-4 py-1 mt-3 rounded-2xl text-xs font-medium border ${typeColor}`}>
+                        <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+                        {therapy.type}
+                      </div>
+                    </div>
+
+                  <p className="text-slate-600 dark:text-slate-400 text-sm line-clamp-3 leading-relaxed">
+                    {therapy.description}
+                  </p>
+
+                  {/* Frequency & Doshas */}
+                  <div className="flex items-center justify-between pt-4 border-t border-slate-800">
+                    <div>
+                      <p className="text-xs text-slate-600 dark:text-slate-400">Frequency</p>
+                      <p className="font-medium text-emerald-600 dark:text-emerald-400">{therapy.frequency}</p>
+                    </div>
+
+                    <div className="text-right">
+                      <p className="text-xs text-slate-600 dark:text-slate-400">DOSHAS</p>
+                      <div className="flex gap-1.5 justify-end mt-1">
+                        {therapy.doshas.map((d, i) => (
+                          <span
+                            key={i}
+                            className="text-[10px] font-mono bg-white border border-slate-200 text-slate-800 px-2.5 py-1 rounded-lg dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700"
+                          >
+                            {d}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Action Button */}
+                  <button onClick={() => openForEdit(therapy.id)} className="w-full mt-6 flex items-center justify-center gap-3 bg-white text-slate-900 dark:bg-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all py-3.5 rounded-2xl text-sm font-medium border border-slate-200 dark:border-slate-700 hover:border-emerald-600">
+                    <Edit2 size={17} />
+                    Edit Therapy Template
                   </button>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
-        {/* Plan Builder & Assign Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Plan Builder */}
-          <div className="lg:col-span-7 bg-slate-900 rounded-3xl p-7 border border-slate-700">
-            <h2 className="text-xl font-semibold mb-1">Plan Builder</h2>
-            <p className="text-slate-400 text-sm mb-6">Custom Protocol for Complex Cases</p>
+      </div>
 
-            <div className="space-y-6">
-              {[
-                { step: "01", title: "TREATMENT SEQUENCE", content: "Abhyanga (Initial) → Swedana (Follow-up)" },
-                { step: "02", title: "DIETARY REGIMEN", content: "Satvik diet, warm fluids, ginger water" },
-                { step: "03", title: "LIFESTYLE ADVICE", content: "Morning sun exposure, meditation 15 mins" },
-                { step: "04", title: "HERBAL PRESCRIPTIONS", content: "Triphala Guggulu - 2 tabs twice daily" }
-              ].map((item, i) => (
-                <div key={i} className="flex gap-5">
-                  <div className="w-7 h-7 rounded-full bg-emerald-900/50 text-emerald-400 flex items-center justify-center text-xs font-bold flex-shrink-0">
-                    {item.step}
+      {/* Create Therapy Modal - Professional Version */}
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-200 w-full max-w-2xl rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-2xl">
+            {/* Modal Header */}
+            <div className="px-8 py-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+              <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">Create New Therapy Template</h2>
+              <button
+                onClick={() => setShowModal(false)}
+                className="text-slate-500 hover:text-slate-800 dark:hover:text-white text-2xl leading-none"
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="p-6 space-y-6 max-h-[75vh] overflow-y-auto">
+              {/* Basic Info */}
+              <div>
+                <h4 className="text-xs font-semibold text-slate-600 dark:text-slate-400 mb-3 uppercase">Basic Information</h4>
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-[11px] text-slate-500 mb-1 block">Therapy Name</label>
+                    <input
+                      value={newTitle}
+                      onChange={(e) => setNewTitle(e.target.value)}
+                      className="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus:border-emerald-500 outline-none text-sm text-slate-900 dark:text-slate-200"
+                      placeholder="e.g. Nasya Therapy"
+                    />
                   </div>
-                  <div className="flex-1">
-                    <p className="font-medium text-sm mb-2 text-slate-300">{item.title}</p>
-                    <div className="bg-slate-800 rounded-2xl p-4 text-sm text-slate-400">
-                      {item.content}
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <label className="text-[11px] text-slate-500 mb-1 block">Duration</label>
+                      <input
+                        value={newDuration}
+                        onChange={(e) => setNewDuration(e.target.value)}
+                        className="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus:border-emerald-500 outline-none text-sm text-slate-900 dark:text-slate-200"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[11px] text-slate-500 mb-1 block">Type</label>
+                      <select
+                        value={newType}
+                        onChange={(e) => setNewType(e.target.value as any)}
+                        className="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus:border-emerald-500 outline-none text-sm text-slate-900 dark:text-slate-200"
+                      >
+                        <option value="Ayurvedic">Ayurvedic</option>
+                        <option value="Physical">Physical</option>
+                        <option value="Mental">Mental</option>
+                        <option value="Rehab">Rehab</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="text-[11px] text-slate-500 mb-1 block">Frequency</label>
+                      <select
+                        value={newFrequency}
+                        onChange={(e) => setNewFrequency(e.target.value as any)}
+                        className="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus:border-emerald-500 outline-none text-sm text-slate-900 dark:text-slate-200"
+                      >
+                        <option value="Daily">Daily</option>
+                        <option value="Weekly">Weekly</option>
+                      </select>
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
+              </div>
 
-          {/* Assign to Patient */}
-          <div className="lg:col-span-5 bg-slate-900 rounded-3xl p-7 border border-slate-700">
-            <h3 className="text-lg font-semibold mb-5">Assign to Patient</h3>
+              {/* Image Upload */}
+              <div>
+                <h4 className="text-xs font-semibold text-slate-600 dark:text-slate-400 mb-3 uppercase">Therapy Image</h4>
+                <div className="border border-dashed border-slate-200 dark:border-dashed dark:border-slate-700 rounded-2xl p-6 text-center bg-white dark:bg-slate-950">
+                  {newImagePreview ? (
+                    <div className="relative h-48 mx-auto rounded-2xl overflow-hidden">
+                      <Image src={newImagePreview} alt="preview" fill className="object-cover" />
+                    </div>
+                  ) : (
+                    <div className="py-8 text-slate-500">
+                      <p className="text-sm">Upload therapy image (optional)</p>
+                    </div>
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        setNewImageFile(file);
+                        setNewImagePreview(URL.createObjectURL(file));
+                      }
+                    }}
+                    className="hidden"
+                    id="therapy-image"
+                  />
+                  <label
+                    htmlFor="therapy-image"
+                    className="mt-4 inline-block px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl text-sm cursor-pointer transition"
+                  >
+                    Choose Image
+                  </label>
+                </div>
+              </div>
 
-            <input 
-              type="text" 
-              placeholder="Search patient name..." 
-              className="w-full bg-slate-800 border border-slate-700 rounded-2xl py-3.5 px-5 text-sm mb-6 focus:outline-none focus:border-emerald-500"
-            />
+              {/* Pricing & Difficulty */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-[11px] text-slate-500 mb-1 block">Price (₹)</label>
+                  <input
+                    type="number"
+                    value={newPrice}
+                    onChange={(e) => setNewPrice(e.target.value)}
+                    className="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus:border-emerald-500 outline-none text-sm text-slate-900 dark:text-slate-200"
+                    placeholder="0"
+                  />
+                </div>
+                <div>
+                  <label className="text-[11px] text-slate-500 mb-1 block">Difficulty</label>
+                  <select
+                    value={newDifficulty}
+                    onChange={(e) => setNewDifficulty(e.target.value)}
+                    className="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus:border-emerald-500 outline-none text-sm text-slate-900 dark:text-slate-200"
+                  >
+                    <option>Low</option>
+                    <option>Moderate</option>
+                    <option>High</option>
+                  </select>
+                </div>
+              </div>
 
-            <div className="bg-slate-800 rounded-2xl p-4 flex items-center gap-4 mb-6">
-              <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Aditi" className="w-12 h-12 rounded-2xl object-cover" />
-              <div className="flex-1">
-                <p className="font-medium">Aditi Sharma</p>
-                <p className="text-xs text-slate-400">Vata-Pitta Prakriti</p>
+              {/* Description */}
+              <div>
+                <label className="text-[11px] text-slate-500 mb-1 block">Description</label>
+                <textarea
+                  value={newDescription}
+                  onChange={(e) => setNewDescription(e.target.value)}
+                  rows={4}
+                  className="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus:border-emerald-500 outline-none resize-y text-sm text-slate-900 dark:text-slate-200"
+                  placeholder="Describe the therapy, its benefits, and target conditions..."
+                />
               </div>
             </div>
 
-            <div className="mb-6">
-              <p className="text-xs text-slate-400 mb-2">START DATE</p>
-              <input type="text" placeholder="mm/dd/yyyy" className="w-full bg-slate-800 border border-slate-700 rounded-2xl py-3.5 px-5 text-sm" />
+            {/* Footer */}
+            <div className="px-6 py-5 border-t border-slate-200 dark:border-slate-800 flex gap-4">
+              <button
+                onClick={() => setShowModal(false)}
+                className="flex-1 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 transition font-medium text-slate-900 dark:text-slate-200"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleCreateTherapy}
+                disabled={!newTitle.trim()}
+                className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-300 disabled:text-slate-500 rounded-2xl font-semibold transition text-white"
+              >
+                {editingId ? 'Save Changes' : 'Create Therapy Template'}
+              </button>
             </div>
-
-            <button className="w-full bg-emerald-600 hover:bg-emerald-500 py-4 rounded-2xl font-medium text-sm transition-all mb-3">
-              Deploy Therapy Plan
-            </button>
-            <button className="w-full py-4 rounded-2xl border border-slate-700 hover:bg-slate-800 text-sm transition-all">
-              Save as Draft
-            </button>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

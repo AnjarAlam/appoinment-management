@@ -188,9 +188,9 @@ export default function ReceptionPage() {
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg font-medium shadow text-xs transition-all"
+          className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg font-medium shadow text-sm transition-all"
         >
-          <Plus size={16} />
+          <Plus size={18} />
           Add Staff
         </button>
       </div>
