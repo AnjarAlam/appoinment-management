@@ -55,6 +55,7 @@ const initialStaff: ReceptionStaff[] = [
 
 export default function ReceptionPage() {
   const [isDark, setIsDark] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
   const [staff, setStaff] = useState<ReceptionStaff[]>(initialStaff);
   const [showModal, setShowModal] = useState(false);
   const [copiedPassword, setCopiedPassword] = useState<string | null>(null);
@@ -77,6 +78,7 @@ export default function ReceptionPage() {
   useEffect(() => {
     const savedTheme = localStorage.getItem('clinic-theme');
     setIsDark(savedTheme === 'dark');
+    setIsHydrated(true);
 
     const handleThemeChange = (e: any) => setIsDark(e.detail.isDark);
     window.addEventListener('themeChange', handleThemeChange);
@@ -162,6 +164,14 @@ export default function ReceptionPage() {
 
   return (
     <div className={`min-h-screen ${isDark ? 'bg-slate-950' : 'bg-slate-50'} p-3 lg:p-4`}>
+      {!isHydrated ? (
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto"></div>
+          </div>
+        </div>
+      ) : (
+        <>
       {/* HEADER */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
         <div>
@@ -499,6 +509,8 @@ export default function ReceptionPage() {
         </form>
       </div>
     )}
+        </>
+      )}
     </div>
   );
 }

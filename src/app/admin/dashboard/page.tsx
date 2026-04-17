@@ -96,12 +96,12 @@ export default function AdminDashboard() {
                 return (
                   <div
                     key={i}
-                    className={`group rounded-3xl p-4 border transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg ${metric.highlighted 
+                    className={`group rounded-3xl p-4 border transition-all duration-300 transform will-change-transform hover:-translate-y-1 hover:scale-[1.02] hover:shadow-xl ${metric.highlighted 
                       ? 'bg-gradient-to-br from-emerald-50 to-white border-emerald-200 dark:from-emerald-950 dark:border-emerald-900' 
-                      : 'bg-white border-slate-200 dark:bg-slate-900 dark:border-slate-800 hover:shadow-md'}`}
+                      : 'bg-white border-slate-200 dark:bg-slate-900 dark:border-slate-800 hover:shadow-md hover:from-white hover:to-emerald-50 hover:border-emerald-200'}`}
                   >
                     <div className="flex justify-between items-start">
-                      <div className={`w-9 h-9 rounded-2xl flex items-center justify-center transition-colors ${metric.highlighted ? 'bg-emerald-600 text-white' : 'bg-slate-100 dark:bg-slate-800 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-900'}`}>
+                      <div className={`w-9 h-9 rounded-2xl flex items-center justify-center transition ${metric.highlighted ? 'bg-emerald-600 text-white' : 'bg-slate-100 dark:bg-slate-800 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-900 group-hover:text-emerald-700 group-hover:scale-105'}`}>
                         <Icon size={20} />
                       </div>
                       <div className={`flex items-center text-xs font-semibold ${isPositive ? 'text-emerald-600' : 'text-red-600'}`}>

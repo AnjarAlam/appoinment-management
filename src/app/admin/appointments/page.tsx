@@ -121,35 +121,35 @@ export default function AppointmentsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0a0f1c] p-6 lg:p-8">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0a0f1c] p-4 lg:p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-10">
-          <div className="flex items-center gap-4">
-            <div className="w-11 h-11 bg-emerald-100 dark:bg-emerald-900/30 rounded-2xl flex items-center justify-center text-emerald-600 dark:text-emerald-400">
-              <Calendar size={26} />
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/30 rounded-2xl flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+              <Calendar size={22} />
             </div>
             <div>
-              <h1 className="text-3xl font-semibold text-slate-900 dark:text-white">Appointments</h1>
-              <p className="text-slate-500 dark:text-slate-400 mt-1">Manage patient schedules and status</p>
+              <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">Appointments</h1>
+              <p className="text-slate-500 dark:text-slate-400 mt-0.5 text-xs">Manage patient schedules and status</p>
             </div>
           </div>
 
-          <button className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-2xl font-medium transition shadow-lg shadow-emerald-600/20">
-            <Plus size={20} />
+          <button className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-2xl font-medium transition shadow-sm">
+            <Plus size={16} />
             New Appointment
           </button>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
           {stats.map((stat, index) => (
             <div 
               key={index}
-              className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6"
+              className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-4"
             >
-              <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">{stat.label}</p>
-              <p className={`text-4xl font-semibold mt-3 ${stat.color}`}>
+              <p className="text-[10px] uppercase tracking-widest text-slate-500 dark:text-slate-400">{stat.label}</p>
+              <p className={`text-3xl font-semibold mt-2 ${stat.color}`}>
                 {stat.value}
               </p>
             </div>
@@ -157,22 +157,22 @@ export default function AppointmentsPage() {
         </div>
 
         {/* Controls */}
-        <div className="flex flex-col md:flex-row gap-4 mb-8">
+        <div className="flex flex-col md:flex-row gap-3 mb-6">
           <div className="relative flex-1">
-            <Search className="absolute left-4 top-4 text-slate-400" size={20} />
+            <Search className="absolute left-3 top-3 text-slate-400" size={18} />
             <input
               type="text"
               placeholder="Search by patient or doctor name..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-3.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-3xl focus:outline-none focus:border-emerald-500 text-sm"
+              className="w-full pl-10 pr-3 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-3xl focus:outline-none focus:border-emerald-500 text-sm"
             />
           </div>
 
           <select
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value as any)}
-            className="px-5 py-3.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-3xl text-sm focus:outline-none"
+            className="px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-3xl text-sm focus:outline-none"
           >
             <option value="all">All Status</option>
             <option value="confirmed">Confirmed</option>
@@ -183,39 +183,39 @@ export default function AppointmentsPage() {
 
         {/* Appointments Table */}
         <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
-          <div className="px-8 py-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+          <div className="px-6 py-3 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
             <div>
-              <h2 className="font-semibold text-lg text-slate-900 dark:text-white">Appointment Schedule</h2>
-              <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+              <h2 className="font-semibold text-base text-slate-900 dark:text-white">Appointment Schedule</h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                 {filteredAppointments.length} appointments found
               </p>
             </div>
-            <div className="flex items-center gap-3 text-sm">
-              <button className="px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition flex items-center gap-2">
+            <div className="flex items-center gap-2 text-sm">
+              <button className="px-3 py-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition flex items-center gap-2 text-sm">
                 Export CSV
               </button>
-              <button className="px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition">
+              <button className="px-3 py-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition text-sm">
                 Bulk Actions
               </button>
             </div>
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[800px]">
+            <table className="w-full min-w-[720px]">
               <thead>
                 <tr className="border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-950">
-                  <th className="text-left px-8 py-4 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Patient</th>
-                  <th className="text-left px-8 py-4 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Doctor</th>
-                  <th className="text-left px-8 py-4 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Type</th>
-                  <th className="text-left px-8 py-4 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Date & Time</th>
-                  <th className="text-left px-8 py-4 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status</th>
-                  <th className="text-right px-8 py-4 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Actions</th>
+                  <th className="text-left px-6 py-3 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Patient</th>
+                  <th className="text-left px-6 py-3 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Doctor</th>
+                  <th className="text-left px-6 py-3 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Type</th>
+                  <th className="text-left px-6 py-3 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Date & Time</th>
+                  <th className="text-left px-6 py-3 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status</th>
+                  <th className="text-right px-6 py-3 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                 {filteredAppointments.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="px-8 py-16 text-center text-slate-400">
+                    <td colSpan={6} className="px-6 py-12 text-center text-slate-400">
                       No appointments found
                     </td>
                   </tr>
@@ -225,30 +225,30 @@ export default function AppointmentsPage() {
                       key={apt.id} 
                       className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
                     >
-                      <td className="px-8 py-5 font-medium text-slate-900 dark:text-white">
+                      <td className="px-6 py-3 font-medium text-slate-900 dark:text-white text-sm">
                         {apt.patient}
                       </td>
-                      <td className="px-8 py-5 text-sm text-slate-600 dark:text-slate-300">
+                      <td className="px-6 py-3 text-sm text-slate-600 dark:text-slate-300">
                         {apt.doctor}
                       </td>
-                      <td className="px-8 py-5 text-sm text-slate-600 dark:text-slate-300">
+                      <td className="px-6 py-3 text-sm text-slate-600 dark:text-slate-300">
                         {apt.type}
                       </td>
-                      <td className="px-8 py-5 text-sm text-slate-600 dark:text-slate-300">
-                        <div>{apt.date}</div>
-                        <div className="font-medium text-slate-700 dark:text-slate-200">{apt.time}</div>
+                      <td className="px-6 py-3 text-sm text-slate-600 dark:text-slate-300">
+                        <div className="text-sm">{apt.date}</div>
+                        <div className="font-medium text-slate-700 dark:text-slate-200 text-sm">{apt.time}</div>
                       </td>
-                      <td className="px-8 py-5">
+                      <td className="px-6 py-3">
                         {getStatusBadge(apt.status)}
                       </td>
-                      <td className="px-8 py-5 text-right">
+                      <td className="px-6 py-3 text-right">
                         <div className="flex items-center justify-end gap-2">
-                          <button className="flex items-center gap-1.5 px-4 py-2 text-xs hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition text-slate-600 dark:text-slate-400">
-                            <Edit2 size={15} />
+                          <button className="flex items-center gap-1 px-3 py-1.5 text-xs hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition text-slate-600 dark:text-slate-400">
+                            <Edit2 size={14} />
                             Edit
                           </button>
-                          <button className="flex items-center gap-1.5 px-4 py-2 text-xs text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/50 rounded-2xl transition">
-                            <Trash2 size={15} />
+                          <button className="flex items-center gap-1 px-3 py-1.5 text-xs text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/50 rounded-2xl transition">
+                            <Trash2 size={14} />
                             Delete
                           </button>
                         </div>
