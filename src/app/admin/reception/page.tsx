@@ -54,7 +54,7 @@ const initialStaff: ReceptionStaff[] = [
 ];
 
 export default function ReceptionPage() {
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(false);
   const [staff, setStaff] = useState<ReceptionStaff[]>(initialStaff);
   const [showModal, setShowModal] = useState(false);
   const [copiedPassword, setCopiedPassword] = useState<string | null>(null);
@@ -76,7 +76,7 @@ export default function ReceptionPage() {
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('clinic-theme');
-    setIsDark(savedTheme !== 'light');
+    setIsDark(savedTheme === 'dark');
 
     const handleThemeChange = (e: any) => setIsDark(e.detail.isDark);
     window.addEventListener('themeChange', handleThemeChange);
@@ -466,14 +466,14 @@ export default function ReceptionPage() {
               </div>
 
               {/* Staff ID Preview */}
-              <div className={`p-2 rounded-lg ${isDark ? 'bg-slate-800/50' : 'bg-slate-50'}`}>
+              {/* <div className={`p-2 rounded-lg ${isDark ? 'bg-slate-800/50' : 'bg-slate-50'}`}>
                 <p className={`text-xs font-semibold mb-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
                   Auto Generated ID
                 </p>
                 <p className={`text-xs font-mono font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`}>
                   {generateStaffId()}
                 </p>
-              </div>
+              </div> */}
             </div>
           </div>
 

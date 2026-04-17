@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 
 export default function AdminDashboard() {
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(false);
   const [chartHeights, setChartHeights] = useState([42, 58, 51, 73, 68, 82]);
   const [hoveredBar, setHoveredBar] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState('');

@@ -16,12 +16,12 @@ import {
 } from 'lucide-react';
 
 export default function NetworkPage() {
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(false);
   const [expandedHospitals, setExpandedHospitals] = useState<number[]>([1]);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('clinic-theme');
-    setIsDark(savedTheme !== 'light');
+    setIsDark(savedTheme === 'dark');
 
     const handleThemeChange = (e: any) => setIsDark(e.detail.isDark);
     window.addEventListener('themeChange', handleThemeChange);

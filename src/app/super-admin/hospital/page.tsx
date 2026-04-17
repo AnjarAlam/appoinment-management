@@ -20,13 +20,13 @@ import {
 import Link from 'next/link';
 
 export default function HospitalManagementPage() {
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('clinic-theme');
-    setIsDark(savedTheme !== 'light');
+    setIsDark(savedTheme === 'dark');
 
     const handleThemeChange = (e: any) => setIsDark(e.detail.isDark);
     window.addEventListener('themeChange', handleThemeChange);

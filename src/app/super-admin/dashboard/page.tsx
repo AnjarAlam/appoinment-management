@@ -28,11 +28,11 @@ import {
 } from 'recharts';
 
 export default function SuperAdminDashboard() {
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('clinic-theme');
-    setIsDark(savedTheme !== 'light');
+    setIsDark(savedTheme === 'dark');
 
     const handleThemeChange = (e: any) => setIsDark(e.detail.isDark);
     window.addEventListener('themeChange', handleThemeChange);
