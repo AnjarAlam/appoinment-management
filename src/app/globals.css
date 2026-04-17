@@ -1,0 +1,388 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global styles for the Ayurved frontend */
+:root {
+  /* Core palette (Ethereal Clinical Aesthetic) - Dark Mode Default */
+  --bg: #121414; /* base background, not pure black */
+  --surface: #121414; /* Level 0 */
+  --surface-container-low: #1a1c1c; /* Level 1 */
+  --surface-container: #1e2020; /* Level 2 */
+  --surface-container-highest: #333535; /* Level 3 */
+
+  --primary: #95d4b3; /* system primary (soft forest) */
+  --primary-container: #003f29; /* deeper primary container */
+
+  --on-surface: #e2e2e2; /* text color (avoid pure white) */
+  --on-surface-variant: #c1c8c4; /* secondary text */
+  --surface-variant: rgba(65,72,70,0.15); /* ghost border fallback */
+  --outline-variant: rgba(65,72,70,0.15);
+
+  /* Glass / tint */
+  --surface-tint: rgba(149,212,179,0.06); /* 6% tint */
+
+  /* Shadows (ambient, not pure black) */
+  --shadow-ambient: 0 24px 48px -12px rgba(18,20,20,0.5);
+
+  /* Typography tokens */
+  --font-display: Manrope, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  --font-ui: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+
+  /* Spacing + radii */
+  --radius-sm: 0.25rem; /* default */
+  --padding-xl: 0.75rem;
+}
+
+/* Light mode overrides - The Digital Sanctuary (Light Edition) */
+html.light {
+  /* Surface Hierarchy - Fine paper layers */
+  --bg: #f8faf9; /* base background - soft sage off-white */
+  --surface: #f8faf9; /* Level 0 - primary base */
+  --surface-container-low: #f2f4f3; /* Level 1 - secondary sectioning */
+  --surface-container: #eff1f0; /* Level 2 - interactive containers */
+  --surface-container-highest: #dee4e2; /* Level 3 - floating cards */
+  --surface-container-lowest: #ffffff; /* Maximum lift - pure white */
+
+  /* Primary Colors - Sage green clinical aesthetic */
+  --primary: #4b6554; /* sage green primary */
+  --primary-container: #3f5948; /* primary-dim for gradients */
+  --primary-dim: #3f5948; /* deeper primary for gradients */
+
+  /* On-Surface - Clinical precision text */
+  --on-surface: #2e3433; /* primary text - deep sage, not pure black */
+  --on-surface-variant: #5a6060; /* secondary text - soft, low-contrast */
+  --surface-variant: rgba(75, 101, 84, 0.08); /* tonal accent */
+  --outline-variant: #adb3b2; /* ghost border - 15% opacity fallback */
+
+  /* Glass & Gradient Effects */
+  --surface-tint: rgba(75, 101, 84, 0.06); /* 6% sage tint for active states */
+  
+  /* Shadows - Ambient, soft */
+  --shadow-ambient: 0 24px 48px -12px rgba(46, 52, 51, 0.06); /* 6% opacity for soft lift */
+
+  /* Transitions */
+  color-scheme: light;
+}
+
+html, body, #__next {
+  height: 100%;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-slate-900 text-white antialiased;
+  margin: 0;
+  font-family: var(--font-ui);
+}
+
+a { @apply text-sky-400 hover:text-sky-300; }
+
+.sr-only {
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden; clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------
+   Design system utilities (Ethereal Clinical Aesthetic)
+   Tokens and small helpers to follow the spec.
+   - No-Line Rule: prefer tonal shifts over 1px solid borders
+   - Glass and gradients for primary accents
+-------------------------------------------------- */
+
+/* Surface helpers (use classes on containers instead of borders) */
+.surface { background: var(--surface); color: var(--on-surface); }
+.surface-container-low { background: var(--surface-container-low); }
+.surface-container { background: var(--surface-container); }
+.surface-container-highest { background: var(--surface-container-highest); }
+
+/* Glass / tint for floating navigation or modals */
+.surface-tint {
+  background-color: transparent; /* use on top of an existing surface */
+  backdrop-filter: blur(20px) saturate(120%);
+  -webkit-backdrop-filter: blur(20px) saturate(120%);
+}
+
+/* Primary gradient (lit-from-within) */
+.primary-gradient {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-container) 100%);
+}
+
+/* Ghost border fallback for accessibility only */
+.ghost-border {
+  outline: 1px solid var(--outline-variant);
+}
+
+/* Buttons */
+.btn {
+  border-radius: 0.75rem; /* xl rounding for "held" feel */
+  font-family: var(--font-ui);
+  padding: 0.625rem 1rem;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-weight: 500;
+  transition: all 300ms ease;
+}
+
+/* Primary button - Sage gradient */
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-container) 100%);
+  color: #f8faf9; /* light surface text */
+  box-shadow: var(--shadow-ambient);
+}
+
+html.light .btn-primary {
+  color: #f8faf9;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -8px rgba(75, 101, 84, 0.15);
+}
+
+/* Secondary button */
+.btn-secondary {
+  background: var(--surface-container-highest);
+  color: var(--on-surface);
+  border: 1px solid var(--outline-variant);
+  opacity: 0.85;
+}
+
+.btn-secondary:hover {
+  opacity: 1;
+  background: var(--surface-container);
+}
+
+/* Tertiary button - Ghost style */
+.btn-tertiary {
+  background: transparent;
+  color: var(--primary);
+  text-decoration: none;
+  border: none;
+}
+
+.btn-tertiary:hover {
+  opacity: 0.8;
+}
+
+/* Cards */
+.card {
+  background: var(--surface-container);
+  padding: 1.5rem; /* 24px - Breathability Standard */
+  border-radius: 0.75rem; /* xl rounding */
+  transition: all 300ms ease;
+}
+
+.card:hover {
+  background: var(--surface-container-low);
+}
+
+.card--no-line { box-shadow: none; border: none; }
+
+/* Forms & inputs */
+.input-field {
+  background: var(--surface-container-highest);
+  color: var(--on-surface);
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem; /* xl rounding */
+  border: 1px solid var(--outline-variant);
+  border-opacity: 15%;
+  font-family: var(--font-ui);
+  transition: all 300ms ease;
+}
+
+.input-field:focus {
+  outline: none;
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--primary);
+  border-opacity: 40%;
+  box-shadow: 0 0 0 3px rgba(75, 101, 84, 0.08);
+}
+
+html.light .input-field:focus {
+  box-shadow: 0 0 0 3px rgba(75, 101, 84, 0.08);
+}
+
+/* Light theme input field styling */
+html.light .input-field {
+  background: var(--surface-container-highest);
+  color: var(--on-surface);
+  border: 1px solid var(--outline-variant);
+}
+
+/* Typography: The Editorial Voice - Manrope */
+.display-lg {
+  font-family: Manrope, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+  font-size: 3.5rem;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  color: var(--on-surface);
+}
+
+.headline-md {
+  font-family: Manrope, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+  font-size: 1.75rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+  color: var(--on-surface);
+}
+
+.title-md {
+  font-family: Manrope, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+  font-size: 1.125rem;
+  line-height: 1.4;
+  letter-spacing: 0;
+  font-weight: 500;
+  color: var(--on-surface);
+}
+
+.body-lg {
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: 0;
+  font-weight: 400;
+  color: var(--on-surface);
+}
+
+.label-md {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--on-surface-variant);
+}
+
+/* Legacy support */
+.display-lg { /* same as above */ }
+.headline-md { /* same as above */ }
+.label-sm { /* alias for label-md */
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--on-surface-variant);
+}
+
+/* Pulse chart tokens */
+.pulse-chart-line { stroke: var(--primary); stroke-width: 1.2; fill: none; }
+.pulse-chart-area { fill: rgba(75, 101, 84, 0.06); }
+
+html.dark .pulse-chart-area { fill: rgba(149, 212, 179, 0.08); }
+/* Role-based glassmorphic sidebar */
+.role-sidebar-glass {
+  background: rgba(30, 32, 32, 0.8);
+  backdrop-filter: blur(12px) saturate(110%);
+  -webkit-backdrop-filter: blur(12px) saturate(110%);
+}
+
+/* Typography helpers */
+.display-lg { font-family: var(--font-display); font-size: 2.25rem; line-height: 1.05; }
+.headline-md { font-family: var(--font-display); font-size: 1.25rem; }
+.label-sm { font-family: var(--font-ui); letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.75rem; }
+
+/* Accessibility and no-white rule */
+body, .on-surface { color: var(--on-surface); }
+
+/* Utility: apply the 'no-line' rule globally for elements that might use borders */
+.no-line { border: none !important; }
+
+
+/* Loader animations */
+@keyframes pulse-slow {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.06); opacity: 0.9; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes float-slow {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0); }
+}
+
+.animate-pulse-slow { animation: pulse-slow 2.8s ease-in-out infinite; }
+.animate-float-slow { animation: float-slow 6s ease-in-out infinite; }
+
+.loader-bg-gradient {
+  background: radial-gradient(ellipse at center, rgba(5,40,30,0.6) 0%, rgba(3,17,13,0.9) 50%, rgba(2,6,6,1) 100%);
+}
+
+.loader-star {
+  width: 8px; height: 8px; border-radius: 9999px; background: rgba(152, 223, 182, 0.12); box-shadow: 0 0 12px rgba(152,223,182,0.12);
+}
+
+/* Polished loader utilities */
+.vignette {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(3,10,8,0.25) 0%, rgba(2,6,6,0.6) 40%, rgba(2,6,6,0.9) 75%);
+}
+
+.glass-card {
+  background: linear-gradient(180deg, rgba(14, 34, 28, 0.45), rgba(6, 10, 8, 0.35));
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 8px 30px rgba(2,8,6,0.6);
+}
+
+.leaf-silhouette {
+  position: absolute; left: 50%; transform: translateX(-50%);
+  bottom: -6%; width: 90%; max-width: 1200px; opacity: 0.06;
+  filter: blur(6px) saturate(90%);
+}
+
+.loader-dots { display:flex; gap:0.6rem; align-items:center; justify-content:center }
+.loader-dots .dot { width:10px; height:10px; border-radius:9999px; background:rgba(16,185,129,0.95); opacity:0.95; transform: translateY(0); }
+.loader-dots .dot:nth-child(1) { animation: jump 900ms infinite -200ms; }
+.loader-dots .dot:nth-child(2) { animation: jump 900ms infinite -100ms; }
+.loader-dots .dot:nth-child(3) { animation: jump 900ms infinite 0ms; }
+
+@keyframes jump {
+  0% { transform: translateY(0); opacity: 0.6 }
+  40% { transform: translateY(-10px); opacity: 1 }
+  80% { transform: translateY(0); opacity: 0.8 }
+  100% { transform: translateY(0); opacity: 0.6 }
+}
+
+.fade-in { animation: fadeIn 600ms ease-out both; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px) } to { opacity: 1; transform: translateY(0) } }
+
+.loader-subtle { color: rgba(148,163,184,0.86); }
+
+/* Exit animation */
+.fade-out { animation: fadeOut 420ms ease-in both; }
+@keyframes fadeOut { from { opacity: 1; transform: scale(1) } to { opacity: 0; transform: scale(0.98) } }
+
+.glass-card { transition: transform 420ms ease, opacity 420ms ease; }
+
+/* Fade In animation for theme toggle */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 300ms ease-out;
+}
+
+/* Top progress bar */
+.progress-wrap { position: absolute; inset: 0 0 auto 0; height: 4px; display:block; }
+.progress-bar { height:4px; width:100%; background:linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); }
+.progress-fill { height:100%; width:0%; background: linear-gradient(90deg, #10B981, #34D399); transform-origin:left; }
+.progress-fill.animate { animation-name: progressFill; animation-timing-function: linear; animation-fill-mode: forwards; }
+
+@keyframes progressFill {
+  from { width: 0%; }
+  to { width: 100%; }
+}
