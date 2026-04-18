@@ -133,13 +133,6 @@ export default function ReceptionDashboard() {
     { name: 'Walk-ins', value: 3, color: '#f59e0b' },
   ];
 
-  // Appointment Status Breakdown
-  const appointmentStatus = [
-    { label: 'Completed', value: 623, color: 'emerald', percentage: 73 },
-    { label: 'Pending', value: 156, color: 'amber', percentage: 18 },
-    { label: 'Cancelled', value: 47, color: 'red', percentage: 5 },
-    { label: 'No-show', value: 30, color: 'slate', percentage: 4 },
-  ];
 
   const maxRevenue = Math.max(...hourlyData.map(d => d.appointments));
 
@@ -162,7 +155,7 @@ export default function ReceptionDashboard() {
               <Plus size={14} /> New Appointment
             </button>
             <button className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-medium transition ${
-              isDark ? 'border-slate-800 hover:bg-slate-900' : 'border-slate-200 hover:bg-slate-100'
+              isDark ? 'border-slate-800 hover:bg-slate-900' : 'border-green-200 hover:bg-green-900'
             }`}>
               <FileDown size={14} /> Export
             </button>
@@ -286,121 +279,15 @@ export default function ReceptionDashboard() {
           </div>
         </div>
 
-        {/* WEEKLY TREND LINE CHART */}
-        <div className={`rounded-lg border p-4 shadow-sm ${
-          isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
-        }`}>
-          <div className="mb-4">
-            <h3 className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>Weekly Appointment Trend</h3>
-            <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Total appointments vs waiting patients</p>
-          </div>
-          <ResponsiveContainer width="100%" height={280}>
-            <AreaChart data={weeklyTrend}>
-              <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#475569' : '#e2e8f0'} />
-              <XAxis dataKey="day" stroke={isDark ? '#94a3b8' : '#64748b'} fontSize={12} />
-              <YAxis stroke={isDark ? '#94a3b8' : '#64748b'} fontSize={12} />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: isDark ? '#1e293b' : '#ffffff',
-                  border: `1px solid ${isDark ? '#475569' : '#e2e8f0'}`,
-                  borderRadius: '8px',
-                  color: isDark ? '#f1f5f9' : '#0f172a',
-                }}
-              />
-              <Legend />
-              <Area type="monotone" dataKey="appointments" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.2} name="Total Appointments" />
-              <Area type="monotone" dataKey="waiting" stroke="#f59e0b" fill="#f59e0b" fillOpacity={0.2} name="Waiting" />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
+       
 
-        {/* MAIN ANALYTICS GRID */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-
-          {/* APPOINTMENT STATUS - LEFT SPAN 2 */}
-          <div className={`lg:col-span-2 rounded-lg border p-4 shadow-sm ${
-            isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
-          }`}>
-            <h2 className={`text-sm font-semibold mb-3 flex items-center gap-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-              <Zap size={16} className="text-amber-600" />
-              Appointment Status
-            </h2>
-            <div className="space-y-3">
-              {appointmentStatus.map((item, idx) => (
-                <div key={idx}>
-                  <div className="flex justify-between mb-1">
-                    <span className={`text-xs font-medium ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                      {item.label}
-                    </span>
-                    <span className={`text-xs font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                      {item.value}
-                    </span>
-                  </div>
-                  <div className={`w-full h-2 rounded-full overflow-hidden ${
-                    isDark ? 'bg-slate-800' : 'bg-slate-200'
-                  }`}>
-                    <div
-                      className={`h-full rounded-full ${
-                        item.color === 'emerald' ? 'bg-emerald-600'
-                        : item.color === 'amber' ? 'bg-amber-600'
-                        : item.color === 'red' ? 'bg-red-600'
-                        : 'bg-slate-600'
-                      }`}
-                      style={{ width: `${item.percentage}%` }}
-                    />
-                  </div>
-                  <p className={`text-xs mt-0.5 ${isDark ? 'text-slate-500' : 'text-slate-500'}`}>
-                    {item.percentage}%
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* APPOINTMENT CATEGORIES - RIGHT */}
-          <div className={`rounded-lg border p-4 shadow-sm ${
-            isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
-          }`}>
-            <h2 className={`text-sm font-semibold mb-3 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-              Appointment Types
-            </h2>
-            <div className="grid grid-cols-2 gap-2">
-              {appointmentCategories.map((category, idx) => {
-                const Icon = category.icon;
-                return (
-                  <div key={idx} className={`p-2 rounded-lg border text-center ${
-                    isDark ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-200'
-                  }`}>
-                    <Icon size={16} className={`${
-                      category.color === 'blue' ? 'text-blue-600'
-                      : category.color === 'emerald' ? 'text-emerald-600'
-                      : category.color === 'red' ? 'text-red-600'
-                      : 'text-amber-600'
-                    } mx-auto mb-1`} />
-                    <p className={`text-xs font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                      {category.name}
-                    </p>
-                    <p className={`text-sm font-bold ${
-                      category.color === 'blue' ? isDark ? 'text-blue-400' : 'text-blue-600'
-                      : category.color === 'emerald' ? isDark ? 'text-emerald-400' : 'text-emerald-600'
-                      : category.color === 'red' ? isDark ? 'text-red-400' : 'text-red-600'
-                      : isDark ? 'text-amber-400' : 'text-amber-600'
-                    }`}>
-                      {category.count}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
 
         {/* DOCTOR AVAILABILITY */}
         <div className={`rounded-lg border p-4 shadow-sm ${
           isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
         }`}>
           <h2 className={`text-sm font-semibold mb-3 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-            Doctor Availability
+            Doctor Availability Today
           </h2>
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
@@ -492,7 +379,33 @@ export default function ReceptionDashboard() {
             })}
           </div>
         </div>
-
+             {/* WEEKLY TREND LINE CHART */}
+        <div className={`rounded-lg border p-4 shadow-sm ${
+          isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
+        }`}>
+          <div className="mb-4">
+            <h3 className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>Weekly Appointment Trend</h3>
+            <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Total appointments vs waiting patients</p>
+          </div>
+          <ResponsiveContainer width="100%" height={280}>
+            <AreaChart data={weeklyTrend}>
+              <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#475569' : '#e2e8f0'} />
+              <XAxis dataKey="day" stroke={isDark ? '#94a3b8' : '#64748b'} fontSize={12} />
+              <YAxis stroke={isDark ? '#94a3b8' : '#64748b'} fontSize={12} />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: isDark ? '#1e293b' : '#ffffff',
+                  border: `1px solid ${isDark ? '#475569' : '#e2e8f0'}`,
+                  borderRadius: '8px',
+                  color: isDark ? '#f1f5f9' : '#0f172a',
+                }}
+              />
+              <Legend />
+              <Area type="monotone" dataKey="appointments" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.2} name="Total Appointments" />
+              <Area type="monotone" dataKey="waiting" stroke="#f59e0b" fill="#f59e0b" fillOpacity={0.2} name="Waiting" />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
       </div>
     </div>
   );

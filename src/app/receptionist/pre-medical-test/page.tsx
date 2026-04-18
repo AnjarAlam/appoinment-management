@@ -8,8 +8,15 @@ interface VitalRecord {
   patientName: string;
   patientPhone: string;
   weight: string;
+  height?: string;
   bp: string;
   sugarLevel: string;
+  spO2?: string;
+  bloodSugar?: string;
+  symptoms?: string;
+  allergies?: string;
+  medications?: string;
+  painLevel?: string;
   temperature: string;
   pulseRate: string;
   notes: string;
@@ -26,8 +33,15 @@ export default function PreMedicalTest() {
       patientName: 'Rajesh Kumar',
       patientPhone: '+91 98765 43210',
       weight: '72.5',
+      height: '172',
       bp: '120/80',
       sugarLevel: '95',
+      spO2: '98',
+      bloodSugar: '95',
+      symptoms: 'None',
+      allergies: 'None',
+      medications: 'Multivitamin',
+      painLevel: '0',
       temperature: '98.6',
       pulseRate: '72',
       notes: 'Normal health status',
@@ -39,8 +53,15 @@ export default function PreMedicalTest() {
       patientName: 'Anjali Patel',
       patientPhone: '+91 99876 54321',
       weight: '',
+      height: '',
       bp: '',
       sugarLevel: '',
+      spO2: '',
+      bloodSugar: '',
+      symptoms: '',
+      allergies: '',
+      medications: '',
+      painLevel: '',
       temperature: '',
       pulseRate: '',
       notes: '',
@@ -55,8 +76,15 @@ export default function PreMedicalTest() {
     patientName: '',
     patientPhone: '',
     weight: '',
+    height: '',
     bp: '',
     sugarLevel: '',
+    spO2: '',
+    bloodSugar: '',
+    symptoms: '',
+    allergies: '',
+    medications: '',
+    painLevel: '',
     temperature: '',
     pulseRate: '',
     notes: '',
@@ -81,8 +109,15 @@ export default function PreMedicalTest() {
       patientName: '',
       patientPhone: '',
       weight: '',
+      height: '',
       bp: '',
       sugarLevel: '',
+      spO2: '',
+      bloodSugar: '',
+      symptoms: '',
+      allergies: '',
+      medications: '',
+      painLevel: '',
       temperature: '',
       pulseRate: '',
       notes: '',
@@ -96,8 +131,15 @@ export default function PreMedicalTest() {
       patientName: vital.patientName,
       patientPhone: vital.patientPhone,
       weight: vital.weight,
+      height: vital.height || '',
       bp: vital.bp,
       sugarLevel: vital.sugarLevel,
+      spO2: vital.spO2 || '',
+      bloodSugar: vital.bloodSugar || '',
+      symptoms: vital.symptoms || '',
+      allergies: vital.allergies || '',
+      medications: vital.medications || '',
+      painLevel: vital.painLevel || '',
       temperature: vital.temperature,
       pulseRate: vital.pulseRate,
       notes: vital.notes,
@@ -130,39 +172,39 @@ export default function PreMedicalTest() {
   };
 
   return (
-    <div className={`${isDark ? 'bg-slate-950' : 'bg-slate-100'} min-h-screen p-6`}>
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className={`${isDark ? 'bg-slate-950' : 'bg-slate-100'} min-h-screen`}>
+      <div className="max-w-7xl mx-auto p-6 space-y-6">
 
         {/* HEADER */}
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-start gap-4">
           <div>
-            <h1 className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            <h1 className={`text-2xl font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>
               Pre-Medical Test
             </h1>
-            <p className="text-sm text-slate-500 mt-1">
-              Record vitals: Weight, BP, Sugar Level, Temperature & Pulse Rate
-            </p>
+            <p className={`${isDark ? 'text-slate-300' : 'text-slate-600'} text-sm mt-1`}>Record vitals: Weight, BP, Sugar Level, Temperature & Pulse Rate</p>
           </div>
 
-          <button
-            onClick={handleAddClick}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition shadow"
-          >
-            <Plus size={16} /> Record Vitals
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleAddClick}
+              className="flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-shadow shadow-sm text-sm"
+            >
+              <Plus size={14} /> Record Vitals
+            </button>
+          </div>
         </div>
 
         {/* SEARCH & FILTER */}
         <div className="flex gap-3">
           <div className="flex-1 relative">
-            <Search size={18} className="absolute left-3 top-3 text-slate-500" />
+            <Search size={18} className={`${isDark ? 'text-slate-400' : 'text-slate-400'} absolute left-3 top-3`} />
             <input
               type="text"
               placeholder="Search by patient name or phone..."
-              className={`w-full pl-10 pr-4 py-2 rounded-xl outline-none transition ${
+              className={`w-full pl-10 pr-4 py-2 rounded-lg text-sm outline-none transition focus:ring-2 focus:ring-blue-500 ${
                 isDark
-                  ? 'bg-slate-900 border border-slate-800 text-white placeholder-slate-500 focus:border-blue-600'
-                  : 'bg-white border border-slate-200 text-slate-900 placeholder-slate-500 focus:border-blue-600'
+                  ? 'bg-slate-900 border border-slate-800 text-white placeholder-slate-500'
+                  : 'bg-white border border-slate-200 text-slate-900 placeholder-slate-500'
               }`}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -171,84 +213,85 @@ export default function PreMedicalTest() {
         </div>
 
         {/* VITALS TABLE */}
-        <div className={`rounded-2xl border overflow-hidden shadow-sm ${
-          isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
-        }`}>
+        <div className={`rounded-2xl border overflow-hidden shadow-sm ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className={`border-b ${isDark ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
-                  <th className="px-6 py-3 text-left text-sm font-semibold">Patient Name</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold">Phone</th>
-                  <th className="px-6 py-3 text-center text-sm font-semibold">Weight (kg)</th>
-                  <th className="px-6 py-3 text-center text-sm font-semibold">BP (mmHg)</th>
-                  <th className="px-6 py-3 text-center text-sm font-semibold">Sugar (mg/dL)</th>
-                  <th className="px-6 py-3 text-center text-sm font-semibold">Temp (°F)</th>
-                  <th className="px-6 py-3 text-center text-sm font-semibold">Pulse (bpm)</th>
-                  <th className="px-6 py-3 text-center text-sm font-semibold">Status</th>
-                  <th className="px-6 py-3 text-center text-sm font-semibold">Actions</th>
+                <tr className={`${isDark ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-200'} border-b` }>
+                  <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wide text-slate-500">Patient Name</th>
+                  <th className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wide text-slate-500">Phone</th>
+                  <th className="px-3 py-2 text-center text-xs font-medium uppercase tracking-wide text-slate-500">Wt</th>
+                  <th className="px-3 py-2 text-center text-xs font-medium uppercase tracking-wide text-slate-500">Ht</th>
+                  <th className="px-3 py-2 text-center text-xs font-medium uppercase tracking-wide text-slate-500">BP</th>
+                  <th className="px-3 py-2 text-center text-xs font-medium uppercase tracking-wide text-slate-500">Sugar</th>
+                  <th className="px-3 py-2 text-center text-xs font-medium uppercase tracking-wide text-slate-500">Temp</th>
+                  <th className="px-3 py-2 text-center text-xs font-medium uppercase tracking-wide text-slate-500">Pulse</th>
+                  <th className="px-3 py-2 text-center text-xs font-medium uppercase tracking-wide text-slate-500">Pain</th>
+                  <th className="px-4 py-2 text-center text-xs font-medium uppercase tracking-wide text-slate-500">Status</th>
+                  <th className="px-4 py-2 text-center text-xs font-medium uppercase tracking-wide text-slate-500">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredVitals.map((vital) => (
-                  <tr
-                    key={vital.id}
-                    className={`border-b transition hover:${isDark ? 'bg-slate-800' : 'bg-slate-50'} ${
-                      isDark ? 'border-slate-800' : 'border-slate-200'
-                    }`}
-                  >
-                    <td className="px-6 py-4 text-sm font-medium">{vital.patientName}</td>
-                    <td className="px-6 py-4 text-sm text-slate-500">{vital.patientPhone}</td>
-                    <td className="px-6 py-4 text-sm text-center">
-                      <div className="flex items-center justify-center gap-1">
-                        <Weight size={14} className="text-purple-500" />
-                        {vital.weight || '-'}
+                  <tr key={vital.id} className={`${isDark ? 'border-slate-800' : 'border-slate-200'} border-b transition ${isDark ? 'hover:bg-slate-800' : 'hover:bg-slate-50'}`}>
+                    <td className="px-3 py-3 text-sm font-medium text-slate-500">{vital.patientName}</td>
+                    <td className="px-3 py-3 text-sm text-slate-500">{vital.patientPhone}</td>
+                    <td className="px-3 py-3 text-sm text-center">
+                      <div className="flex items-center justify-center gap-2 text-sm text-slate-400">
+                        <Weight size={13} className="text-slate-400" />
+                        <span className="text-sm">{vital.weight || '-'}</span>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-sm text-center">
-                      <div className="flex items-center justify-center gap-1">
-                        <Heart size={14} className="text-red-500" />
-                        {vital.bp || '-'}
+                    <td className="px-3 py-3 text-sm text-center">
+                      <span className="text-sm">{vital.height || '-'}</span>
+                    </td>
+                    <td className="px-3 py-3 text-sm text-center">
+                      <div className="flex items-center justify-center gap-2 text-sm text-slate-400">
+                        <Heart size={13} className="text-rose-400" />
+                        <span className="text-sm">{vital.bp || '-'}</span>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-sm text-center">
-                      <div className="flex items-center justify-center gap-1">
-                        <Droplet size={14} className="text-blue-500" />
-                        {vital.sugarLevel || '-'}
+                    <td className="px-3 py-3 text-sm text-center">
+                      <div className="flex items-center justify-center gap-2 text-sm text-slate-400">
+                        <Droplet size={13} className="text-sky-400" />
+                        <span className="text-sm">{vital.bloodSugar || vital.sugarLevel || '-'}</span>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-sm text-center">
-                      <div className="flex items-center justify-center gap-1">
-                        <Thermometer size={14} className="text-orange-500" />
-                        {vital.temperature || '-'}
+                    <td className="px-3 py-3 text-sm text-center">
+                      <div className="flex items-center justify-center gap-2 text-sm text-slate-400">
+                        <Thermometer size={13} className="text-amber-400" />
+                        <span className="text-sm">{vital.temperature || '-'}</span>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-sm text-center">
-                      <div className="flex items-center justify-center gap-1">
-                        <Activity size={14} className="text-green-500" />
-                        {vital.pulseRate || '-'}
+                    <td className="px-3 py-3 text-sm text-center">
+                      <div className="flex items-center justify-center gap-2 text-sm text-slate-400">
+                        <Activity size={13} className="text-emerald-400" />
+                        <span className="text-sm">{vital.pulseRate || '-'}</span>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-sm text-center">
-                      <span className={`px-2 py-1 rounded-lg text-xs font-semibold ${
+                    <td className="px-3 py-3 text-sm text-center text-slate-500">
+                      <span className="text-sm">{vital.painLevel || '-'}</span>
+                    </td>
+                    <td className="px-4 py-3 text-sm text-center">
+                      <span className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-semibold ${
                         vital.status === 'completed'
-                          ? 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400'
-                          : 'bg-amber-500/20 text-amber-600 dark:text-amber-400'
+                          ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-300'
+                          : 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-300'
                       }`}>
                         {vital.status === 'completed' ? 'Done' : 'Pending'}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-sm text-center">
+                    <td className="px-4 py-3 text-sm text-center">
                       <div className="flex gap-2 justify-center">
                         <button
                           onClick={() => handleEdit(vital)}
-                          className="px-3 py-1 rounded-lg text-blue-600 hover:bg-blue-500/10 transition"
+                          className="px-2 py-1 rounded-md text-xs text-blue-600 hover:bg-blue-500/10 transition"
                         >
                           Edit
                         </button>
                         <button
                           onClick={() => handleDelete(vital.id)}
-                          className="px-3 py-1 rounded-lg text-red-600 hover:bg-red-500/10 transition"
+                          className="px-2 py-1 rounded-md text-xs text-red-600 hover:bg-red-500/10 transition"
                         >
                           Delete
                         </button>
@@ -264,51 +307,34 @@ export default function PreMedicalTest() {
 
       {/* MODAL */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className={`rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto ${
-            isDark ? 'bg-slate-900' : 'bg-white'
-          }`}>
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div role="dialog" aria-modal="true" aria-labelledby="modal-title" className={`rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto ${isDark ? 'bg-slate-900' : 'bg-white'}`}>
             {/* Modal Header */}
-            <div className={`sticky top-0 flex justify-between items-center p-6 border-b ${
-              isDark ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-200'
-            }`}>
-              <h2 className="text-xl font-semibold">
-                {editingId ? 'Update Vitals' : 'Record Vitals'}
-              </h2>
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="text-slate-500 hover:text-slate-700"
-              >
-                <X size={24} />
+            <div className={`sticky top-0 flex justify-between items-center py-4 px-5 border-b ${isDark ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
+              <h2 id="modal-title" className="text-lg font-medium">{editingId !== null ? 'Update Vitals' : 'Record Vitals'}</h2>
+              <button onClick={() => setIsModalOpen(false)} aria-label="Close" className="text-slate-400 hover:text-slate-600">
+                <X size={20} />
               </button>
             </div>
 
             {/* Modal Body */}
-            <div className="p-6 space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+            <div className="p-5 space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium mb-2">Patient Name *</label>
+                  <label className="block text-xs font-medium mb-1 text-slate-400">Patient Name *</label>
                   <input
                     type="text"
-                    className={`w-full px-4 py-2 rounded-xl outline-none transition ${
-                      isDark
-                        ? 'bg-slate-800 border border-slate-700 text-white'
-                        : 'bg-slate-50 border border-slate-200 text-slate-900'
-                    }`}
+                    className={`w-full px-3 py-2 rounded-lg text-sm outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
                     value={formData.patientName}
                     onChange={(e) => setFormData({ ...formData, patientName: e.target.value })}
                     placeholder="Enter patient name"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">Phone Number</label>
+                  <label className="block text-xs font-medium mb-1 text-slate-400">Phone Number</label>
                   <input
                     type="tel"
-                    className={`w-full px-4 py-2 rounded-xl outline-none transition ${
-                      isDark
-                        ? 'bg-slate-800 border border-slate-700 text-white'
-                        : 'bg-slate-50 border border-slate-200 text-slate-900'
-                    }`}
+                    className={`w-full px-3 py-2 rounded-lg text-sm outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
                     value={formData.patientPhone}
                     onChange={(e) => setFormData({ ...formData, patientPhone: e.target.value })}
                     placeholder="+91 XXXXX XXXXX"
@@ -316,35 +342,23 @@ export default function PreMedicalTest() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium mb-2 flex items-center gap-2">
-                    <Weight size={16} /> Weight (kg)
-                  </label>
+                  <label className="text-xs font-medium mb-1 text-slate-400 flex items-center gap-2"><Weight size={14} /> Weight (kg)</label>
                   <input
                     type="number"
                     step="0.1"
-                    className={`w-full px-4 py-2 rounded-xl outline-none transition ${
-                      isDark
-                        ? 'bg-slate-800 border border-slate-700 text-white'
-                        : 'bg-slate-50 border border-slate-200 text-slate-900'
-                    }`}
+                    className={`w-full px-3 py-2 rounded-lg text-sm outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
                     value={formData.weight}
                     onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
                     placeholder="e.g., 72.5"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2 flex items-center gap-2">
-                    <Heart size={16} /> BP (mmHg)
-                  </label>
+                  <label className="text-xs font-medium mb-1 text-slate-400 flex items-center gap-2"><Heart size={14} /> BP (mmHg)</label>
                   <input
                     type="text"
-                    className={`w-full px-4 py-2 rounded-xl outline-none transition ${
-                      isDark
-                        ? 'bg-slate-800 border border-slate-700 text-white'
-                        : 'bg-slate-50 border border-slate-200 text-slate-900'
-                    }`}
+                    className={`w-full px-3 py-2 rounded-lg text-sm outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
                     value={formData.bp}
                     onChange={(e) => setFormData({ ...formData, bp: e.target.value })}
                     placeholder="e.g., 120/80"
@@ -352,67 +366,101 @@ export default function PreMedicalTest() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium mb-2 flex items-center gap-2">
-                    <Droplet size={16} /> Sugar Level (mg/dL)
-                  </label>
+                  <label className="text-xs font-medium mb-1 text-slate-400 flex items-center gap-2"><Weight size={14} /> Height (cm)</label>
                   <input
                     type="number"
-                    className={`w-full px-4 py-2 rounded-xl outline-none transition ${
-                      isDark
-                        ? 'bg-slate-800 border border-slate-700 text-white'
-                        : 'bg-slate-50 border border-slate-200 text-slate-900'
-                    }`}
-                    value={formData.sugarLevel}
-                    onChange={(e) => setFormData({ ...formData, sugarLevel: e.target.value })}
+                    step="0.1"
+                    className={`w-full px-3 py-2 rounded-lg text-sm outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
+                    value={formData.height}
+                    onChange={(e) => setFormData({ ...formData, height: e.target.value })}
+                    placeholder="e.g., 172"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-medium mb-1 text-slate-400 flex items-center gap-2">SpO2 (%)</label>
+                  <input
+                    type="number"
+                    step="1"
+                    className={`w-full px-3 py-2 rounded-lg text-sm outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
+                    value={formData.spO2}
+                    onChange={(e) => setFormData({ ...formData, spO2: e.target.value })}
+                    placeholder="e.g., 98"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs font-medium mb-1 text-slate-400 flex items-center gap-2"><Droplet size={14} /> Blood Sugar (mg/dL)</label>
+                  <input
+                    type="number"
+                    className={`w-full px-3 py-2 rounded-lg text-sm outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
+                    value={formData.bloodSugar}
+                    onChange={(e) => setFormData({ ...formData, bloodSugar: e.target.value })}
                     placeholder="e.g., 95"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2 flex items-center gap-2">
-                    <Thermometer size={16} /> Temperature (°F)
-                  </label>
+                  <label className="text-xs font-medium mb-1 text-slate-400 flex items-center gap-2">Pain Level (0-10)</label>
                   <input
                     type="number"
-                    step="0.1"
-                    className={`w-full px-4 py-2 rounded-xl outline-none transition ${
-                      isDark
-                        ? 'bg-slate-800 border border-slate-700 text-white'
-                        : 'bg-slate-50 border border-slate-200 text-slate-900'
-                    }`}
-                    value={formData.temperature}
-                    onChange={(e) => setFormData({ ...formData, temperature: e.target.value })}
-                    placeholder="e.g., 98.6"
+                    min="0"
+                    max="10"
+                    className={`w-full px-3 py-2 rounded-lg text-sm outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
+                    value={formData.painLevel}
+                    onChange={(e) => setFormData({ ...formData, painLevel: e.target.value })}
+                    placeholder="e.g., 2"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2 flex items-center gap-2">
-                  <Activity size={16} /> Pulse Rate (bpm)
-                </label>
+                <label className="text-xs font-medium mb-1 text-slate-400 flex items-center gap-2"><Activity size={14} /> Pulse Rate (bpm)</label>
                 <input
                   type="number"
-                  className={`w-full px-4 py-2 rounded-xl outline-none transition ${
-                    isDark
-                      ? 'bg-slate-800 border border-slate-700 text-white'
-                      : 'bg-slate-50 border border-slate-200 text-slate-900'
-                  }`}
+                  className={`w-full px-3 py-2 rounded-lg text-sm outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
                   value={formData.pulseRate}
                   onChange={(e) => setFormData({ ...formData, pulseRate: e.target.value })}
                   placeholder="e.g., 72"
                 />
               </div>
 
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-xs font-medium mb-1 text-slate-400">Symptoms</label>
+                  <input
+                    className={`w-full px-3 py-2 rounded-lg text-sm outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
+                    value={formData.symptoms}
+                    onChange={(e) => setFormData({ ...formData, symptoms: e.target.value })}
+                    placeholder="e.g., cough, fever"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium mb-1 text-slate-400">Allergies</label>
+                  <input
+                    className={`w-full px-3 py-2 rounded-lg text-sm outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
+                    value={formData.allergies}
+                    onChange={(e) => setFormData({ ...formData, allergies: e.target.value })}
+                    placeholder="e.g., penicillin"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium mb-1 text-slate-400">Medications</label>
+                  <input
+                    className={`w-full px-3 py-2 rounded-lg text-sm outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
+                    value={formData.medications}
+                    onChange={(e) => setFormData({ ...formData, medications: e.target.value })}
+                    placeholder="e.g., aspirin"
+                  />
+                </div>
+              </div>
+
               <div>
-                <label className="block text-sm font-medium mb-2">Notes</label>
+                <label className="block text-xs font-medium mb-1 text-slate-400">Notes</label>
                 <textarea
-                  className={`w-full px-4 py-2 rounded-xl outline-none transition resize-none ${
-                    isDark
-                      ? 'bg-slate-800 border border-slate-700 text-white'
-                      : 'bg-slate-50 border border-slate-200 text-slate-900'
-                  }`}
+                  className={`w-full px-3 py-2 rounded-lg text-sm outline-none transition resize-none ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
                   rows={3}
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
@@ -422,24 +470,19 @@ export default function PreMedicalTest() {
             </div>
 
             {/* Modal Footer */}
-            <div className={`flex gap-3 p-6 border-t justify-end ${
-              isDark ? 'border-slate-800' : 'border-slate-200'
-            }`}>
+            <div className={`flex gap-3 py-4 px-5 border-t justify-end ${isDark ? 'border-slate-800' : 'border-slate-200'}`}>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className={`px-4 py-2 rounded-xl transition ${
-                  isDark
-                    ? 'bg-slate-800 hover:bg-slate-700 text-white'
-                    : 'bg-slate-200 hover:bg-slate-300 text-slate-900'
-                }`}
+                className={`px-3 py-2 rounded-md text-sm transition ${isDark ? 'bg-slate-800 hover:bg-slate-700 text-white' : 'bg-slate-200 hover:bg-slate-300 text-slate-900'}`}
               >
                 Cancel
               </button>
               <button
                 onClick={handleSave}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 transition"
+                disabled={!formData.patientName.trim()}
+                className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm bg-emerald-600 text-white hover:bg-emerald-700 transition ${!formData.patientName.trim() ? 'opacity-60 cursor-not-allowed hover:bg-emerald-600' : ''}`}
               >
-                <Save size={16} /> Save Vitals
+                <Save size={14} /> Save Vitals
               </button>
             </div>
           </div>

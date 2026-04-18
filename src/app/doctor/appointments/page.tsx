@@ -104,94 +104,64 @@ export default function DoctorAppointments() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'active':
-        return { bg: 'bg-emerald-500/20', text: 'text-emerald-600', label: 'Active', icon: '🔴' };
+        return { bg: 'bg-emerald-100 dark:bg-emerald-900', text: 'text-emerald-800 dark:text-emerald-300', label: 'Active', icon: '●' };
       case 'pending':
-        return { bg: 'bg-blue-500/20', text: 'text-blue-600', label: 'Pending', icon: '⏱' };
+        return { bg: 'bg-blue-100 dark:bg-blue-900', text: 'text-blue-800 dark:text-blue-300', label: 'Pending', icon: '⏱' };
       case 'completed':
-        return { bg: 'bg-slate-500/20', text: 'text-slate-600', label: 'Completed', icon: '✓' };
+        return { bg: 'bg-slate-100 dark:bg-slate-800', text: 'text-slate-700 dark:text-slate-300', label: 'Completed', icon: '✓' };
       case 'cancelled':
-        return { bg: 'bg-red-500/20', text: 'text-red-600', label: 'Cancelled', icon: '✕' };
+        return { bg: 'bg-red-100 dark:bg-red-900', text: 'text-red-700 dark:text-red-300', label: 'Cancelled', icon: '✕' };
       default:
-        return { bg: 'bg-slate-500/20', text: 'text-slate-600', label: 'Unknown', icon: '?' };
+        return { bg: 'bg-slate-100 dark:bg-slate-800', text: 'text-slate-700 dark:text-slate-300', label: 'Unknown', icon: '?' };
     }
   };
 
   return (
-    <div className={`${isDark ? 'bg-slate-950' : 'bg-slate-100'} min-h-screen p-6`}>
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className={`${isDark ? 'bg-slate-950' : 'bg-slate-100'} min-h-screen`}>
+      <div className="max-w-7xl mx-auto p-4 space-y-4">
 
         {/* HEADER */}
         <div>
-          <h1 className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
+          <h1 className={`text-xl font-semibold ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
             My Appointments
           </h1>
-          <p className="text-sm text-slate-500 mt-1">
-            Manage and view all patient appointments
-          </p>
+          <p className={`${isDark ? 'text-slate-300' : 'text-slate-600'} text-xs mt-1`}>Manage and view all patient appointments</p>
         </div>
 
         {/* STATS */}
-        <div className="grid grid-cols-4 gap-4">
-          <div className={`p-4 rounded-xl border ${
-            isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
-          }`}>
-            <p className="text-sm text-slate-500">Total Appointments</p>
-            <p className={`text-2xl font-bold mt-1 ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>
-              {appointments.length}
-            </p>
+        <div className="grid grid-cols-4 gap-3">
+          <div className={`p-3 rounded-lg border ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
+            <p className="text-xs text-slate-500">Total Appointments</p>
+            <p className={`text-xl font-semibold mt-1 ${isDark ? 'text-blue-300' : 'text-blue-600'}`}>{appointments.length}</p>
           </div>
-          <div className={`p-4 rounded-xl border ${
-            isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
-          }`}>
-            <p className="text-sm text-slate-500">Active Today</p>
-            <p className={`text-2xl font-bold mt-1 ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`}>
-              {appointments.filter(a => a.status === 'active').length}
-            </p>
+          <div className={`p-3 rounded-lg border ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
+            <p className="text-xs text-slate-500">Active Today</p>
+            <p className={`text-xl font-semibold mt-1 ${isDark ? 'text-emerald-300' : 'text-emerald-600'}`}>{appointments.filter(a => a.status === 'active').length}</p>
           </div>
-          <div className={`p-4 rounded-xl border ${
-            isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
-          }`}>
-            <p className="text-sm text-slate-500">Pending</p>
-            <p className={`text-2xl font-bold mt-1 ${isDark ? 'text-amber-400' : 'text-amber-600'}`}>
-              {appointments.filter(a => a.status === 'pending').length}
-            </p>
+          <div className={`p-3 rounded-lg border ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
+            <p className="text-xs text-slate-500">Pending</p>
+            <p className={`text-xl font-semibold mt-1 ${isDark ? 'text-amber-300' : 'text-amber-600'}`}>{appointments.filter(a => a.status === 'pending').length}</p>
           </div>
-          <div className={`p-4 rounded-xl border ${
-            isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
-          }`}>
-            <p className="text-sm text-slate-500">Completed</p>
-            <p className={`text-2xl font-bold mt-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-              {appointments.filter(a => a.status === 'completed').length}
-            </p>
+          <div className={`p-3 rounded-lg border ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
+            <p className="text-xs text-slate-500">Completed</p>
+            <p className={`text-xl font-semibold mt-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>{appointments.filter(a => a.status === 'completed').length}</p>
           </div>
         </div>
 
         {/* SEARCH & FILTER */}
-        <div className="flex gap-3">
+        <div className="flex gap-3 items-center">
           <div className="flex-1 relative">
-            <Search size={18} className="absolute left-3 top-3 text-slate-500" />
+            <Search size={16} className="absolute left-3 top-3 text-slate-400" />
             <input
               type="text"
               placeholder="Search by patient name or phone..."
-              className={`w-full pl-10 pr-4 py-2 rounded-xl outline-none transition ${
-                isDark
-                  ? 'bg-slate-900 border border-slate-800 text-white placeholder-slate-500 focus:border-blue-600'
-                  : 'bg-white border border-slate-200 text-slate-900 placeholder-slate-500 focus:border-blue-600'
-              }`}
+              className={`w-full pl-10 pr-3 py-1.5 rounded-lg text-sm outline-none transition ${isDark ? 'bg-slate-900 border border-slate-800 text-white placeholder-slate-500 focus:ring-1 focus:ring-blue-500' : 'bg-white border border-slate-200 text-slate-900 placeholder-slate-500 focus:ring-1 focus:ring-blue-500'}`}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
 
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className={`px-4 py-2 rounded-xl outline-none transition ${
-              isDark
-                ? 'bg-slate-900 border border-slate-800 text-white'
-                : 'bg-white border border-slate-200 text-slate-900'
-            }`}
-          >
+          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className={`px-3 py-1.5 rounded-lg text-sm outline-none transition ${isDark ? 'bg-slate-900 border border-slate-800 text-white' : 'bg-white border border-slate-200 text-slate-900'}`}>
             <option value="all">All Status</option>
             <option value="active">Active</option>
             <option value="pending">Pending</option>
@@ -201,79 +171,69 @@ export default function DoctorAppointments() {
         </div>
 
         {/* APPOINTMENTS TABLE */}
-        <div className={`rounded-2xl border overflow-hidden shadow-sm ${
-          isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
-        }`}>
+        <div className={`rounded-lg border overflow-hidden shadow-sm ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className={`border-b ${isDark ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
-                  <th className="px-6 py-3 text-left text-sm font-semibold">Patient</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold">Date & Time</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold">Reason</th>
-                  <th className="px-6 py-3 text-center text-sm font-semibold">Vitals</th>
-                  <th className="px-6 py-3 text-center text-sm font-semibold">Status</th>
-                  <th className="px-6 py-3 text-center text-sm font-semibold">Action</th>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-500">Patient</th>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-500">Date & Time</th>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-500">Reason</th>
+                  <th className="px-4 py-2 text-center text-xs font-medium text-slate-500">Vitals</th>
+                  <th className="px-4 py-2 text-center text-xs font-medium text-slate-500">Status</th>
+                  <th className="px-4 py-2 text-center text-xs font-medium text-slate-500">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredAppointments.map((apt) => {
                   const statusBadge = getStatusBadge(apt.status);
                   return (
-                    <tr
-                      key={apt.id}
-                      className={`border-b transition hover:${isDark ? 'bg-slate-800' : 'bg-slate-50'} ${
-                        isDark ? 'border-slate-800' : 'border-slate-200'
-                      }`}
-                    >
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
-                            <User size={18} className="text-blue-600" />
+                    <tr key={apt.id} className={`${isDark ? 'border-slate-800 hover:bg-slate-800' : 'border-slate-200 hover:bg-slate-50'} border-b transition`}>
+                      <td className="px-3 py-2">
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center">
+                            <User size={14} className="text-blue-600" />
                           </div>
                           <div>
-                            <p className="text-sm font-medium">{apt.patientName}</p>
-                            <p className="text-xs text-slate-500">{apt.phone}</p>
+                            <p className="text-sm font-medium text-slate-500">{apt.patientName}</p>
+                            <p className="text-[11px] text-slate-500">{apt.phone}</p>
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-sm">
-                        <div className="flex items-center gap-2">
-                          <Calendar size={14} className="text-slate-500" />
+                      <td className="px-3 py-2 text-xs">
+                        <div className="flex items-center gap-2 text-slate-500">
+                          <Calendar size={12} className="text-slate-400" />
                           <span>{apt.appointmentDate}</span>
                         </div>
                         <div className="flex items-center gap-2 mt-1">
-                          <Clock size={14} className="text-slate-500" />
-                          <span className="text-xs text-slate-500">{apt.appointmentTime}</span>
+                          <Clock size={12} className="text-slate-400" />
+                          <span className="text-[11px] text-slate-500">{apt.appointmentTime}</span>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-sm">{apt.reason}</td>
-                      <td className="px-6 py-4 text-center">
+                      <td className="px-3 py-2 text-xs text-slate-500">{apt.reason}</td>
+                      <td className="px-3 py-2 text-center">
                         {apt.vitals ? (
                           <div className="flex items-center justify-center gap-2">
-                            <span className="text-xs bg-blue-500/20 text-blue-600 px-2 py-1 rounded">
+                            <span className="text-[11px] bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded">
                               BP: {apt.vitals.bp}
                             </span>
-                            <span className="text-xs bg-red-500/20 text-red-600 px-2 py-1 rounded">
+                            <span className="text-[11px] bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 px-2 py-0.5 rounded">
                               Sugar: {apt.vitals.sugarLevel}
                             </span>
                           </div>
                         ) : (
-                          <span className="text-xs text-slate-500">—</span>
+                          <span className="text-[11px] text-slate-500">—</span>
                         )}
                       </td>
-                      <td className="px-6 py-4 text-center">
-                        <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-lg text-xs font-semibold ${statusBadge.bg} ${statusBadge.text}`}>
+                      <td className="px-3 py-2 text-center">
+                        <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-[11px] font-semibold ${statusBadge.bg} ${statusBadge.text}`}>
                           {statusBadge.icon} {statusBadge.label}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-center">
+                      <td className="px-3 py-2 text-center">
                         {apt.status === 'active' || apt.status === 'pending' ? (
-                          <Link
-                            href={`/doctor/diagnosis?patientId=${apt.id}&patientName=${apt.patientName}`}
-                            className="flex items-center justify-center gap-2 px-3 py-1 rounded-lg bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 transition"
-                          >
-                            Diagnose <ArrowRight size={14} />
+                          <Link href={`/doctor/diagnosis?patientId=${apt.id}&patientName=${apt.patientName}`} className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 transition">
+                            Diagnose <ArrowRight size={12} />
                           </Link>
                         ) : (
                           <span className="text-xs text-slate-500">View</span>

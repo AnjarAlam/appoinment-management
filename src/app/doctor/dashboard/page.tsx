@@ -162,20 +162,20 @@ export default function DoctorDashboard() {
   ];
 
   return (
-    <div className={`${isDark ? 'bg-slate-950' : 'bg-slate-50'} min-h-screen p-3 sm:p-4`}>
-      <div className="max-w-7xl mx-auto space-y-4">
+    <div className={`${isDark ? 'bg-slate-950' : 'bg-slate-50'} min-h-screen p-3 sm:p-3`}>
+      <div className="max-w-auto mx-4 space-y-2">
 
         {/* HEADER */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-2">
           <div>
-            <h1 className={`text-lg font-semibold tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            <h1 className={`text-base font-semibold tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
               Doctor <span className="text-emerald-600">Dashboard</span>
             </h1>
-            <p className={`${isDark ? 'text-slate-500' : 'text-slate-600'} mt-0.5 text-xs`}>
+            <p className={`${isDark ? 'text-slate-500' : 'text-slate-600'} mt-0.5 text-[11px]`}>
               Welcome back, Dr. Priya Sharma • <span className="font-medium text-emerald-600">12 appointments today</span>
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
             <Link href="/doctor/diagnosis" className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition text-xs font-medium shadow-sm">
               <AlertCircle size={14} /> New Diagnosis
             </Link>
@@ -188,14 +188,14 @@ export default function DoctorDashboard() {
         </div>
 
         {/* CHARTS SECTION */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
           {/* Weekly Trend Chart */}
-          <div className={`rounded-lg border p-4 ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
-            <div className="mb-4">
+          <div className={`rounded-lg border p-3 ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
+            <div className="mb-3">
               <h3 className={`text-xs font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>Weekly Trend</h3>
-              <p className={`text-xs ${isDark ? 'text-slate-500' : 'text-slate-600'}`}>Appointments vs Completed</p>
+              <p className={`text-[11px] ${isDark ? 'text-slate-500' : 'text-slate-600'}`}>Appointments vs Completed</p>
             </div>
-            <ResponsiveContainer width="100%" height={250}>
+            <ResponsiveContainer width="100%" height={200}>
               <LineChart data={weeklyTrendData}>
                 <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#475569' : '#e2e8f0'} />
                 <XAxis dataKey="day" stroke={isDark ? '#94a3b8' : '#64748b'} fontSize={12} />
@@ -216,12 +216,12 @@ export default function DoctorDashboard() {
           </div>
 
           {/* Daily Breakdown Chart */}
-          <div className={`rounded-lg border p-4 ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
-            <div className="mb-4">
+          <div className={`rounded-lg border p-3 ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
+            <div className="mb-3">
               <h3 className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>Daily Breakdown</h3>
-              <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Appointments by time slot</p>
+              <p className={`text-[11px] ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Appointments by time slot</p>
             </div>
-            <ResponsiveContainer width="100%" height={250}>
+            <ResponsiveContainer width="100%" height={200}>
               <BarChart data={dailyBreakdownData}>
                 <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#475569' : '#e2e8f0'} />
                 <XAxis dataKey="time" stroke={isDark ? '#94a3b8' : '#64748b'} fontSize={12} />
@@ -241,12 +241,12 @@ export default function DoctorDashboard() {
         </div>
 
         {/* PERFORMANCE METRICS */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
           {performanceData.map((perf, i) => (
-            <div key={i} className={`rounded-lg border p-3 ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
-              <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>{perf.metric}</p>
-              <div className="flex items-end justify-between gap-2 mt-2">
-                <p className={`text-xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>{perf.value}</p>
+            <div key={i} className={`rounded-lg border p-2 ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
+              <p className={`text-[11px] ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>{perf.metric}</p>
+              <div className="flex items-end justify-between gap-2 mt-1">
+                <p className={`text-lg font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>{perf.value}</p>
                 <span className={`flex items-center gap-0.5 text-xs font-semibold ${perf.positive ? isDark ? 'text-emerald-400' : 'text-emerald-600' : isDark ? 'text-red-400' : 'text-red-600'}`}>
                   {perf.positive ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
                   {perf.trend}
@@ -255,13 +255,13 @@ export default function DoctorDashboard() {
             </div>
           ))}
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
           {stats.map((stat, i) => {
             const Icon = stat.icon;
             return (
               <div
                 key={i}
-                className={`rounded-lg border p-4 shadow-sm transition hover:shadow-md ${
+                className={`rounded-lg border p-3 shadow-sm transition hover:shadow-md ${
                   isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
                 }`}
               >
@@ -280,10 +280,10 @@ export default function DoctorDashboard() {
                     }`} />
                   </div>
                 </div>
-                <p className={`text-xs mb-0.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                <p className={`text-[11px] mb-0.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
                   {stat.title}
                 </p>
-                <p className={`text-xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                <p className={`text-lg font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
                   {stat.value}
                 </p>
               </div>
@@ -292,52 +292,51 @@ export default function DoctorDashboard() {
         </div>
 
         {/* MAIN GRID */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
 
           {/* TODAY'S APPOINTMENTS */}
           <div className={`lg:col-span-2 rounded-lg border shadow-sm ${
             isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
           }`}>
-            <div className={`p-4 border-b ${isDark ? 'border-slate-800' : 'border-slate-200'}`}>
+            <div className={`p-3 border-b ${isDark ? 'border-slate-800' : 'border-slate-200'}`}>
               <div className="flex justify-between items-start">
                 <div>
                   <h2 className={`text-sm font-semibold flex items-center gap-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
                     <Calendar size={16} className="text-blue-600" />
                     Today's Appointments
                   </h2>
-                  <p className={`text-xs mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Patient consultations</p>
+                  <p className={`text-[11px] mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Patient consultations</p>
                 </div>
                 <Link href="/doctor/appointments" className="text-emerald-600 hover:text-emerald-700 text-xs font-medium">
                   View All →
                 </Link>
               </div>
             </div>
-
             <div className="divide-y divide-slate-800">
               {todayAppointments.map((apt) => (
-                <div key={apt.id} className={`p-3 flex items-center justify-between hover:${isDark ? 'bg-slate-800' : 'bg-slate-50'} transition`}>
+                <div key={apt.id} className={`p-2 flex items-center justify-between transition hover:${isDark ? 'bg-slate-800' : 'bg-slate-50'}`}>
                   <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <div className={`p-1.5 rounded flex items-center justify-center flex-shrink-0 ${
+                    <div className={`p-1 rounded flex items-center justify-center flex-shrink-0 ${
                       isDark ? 'bg-blue-500/10' : 'bg-blue-50'
                     }`}>
-                      <Stethoscope size={14} className="text-blue-600" />
+                      <Stethoscope size={13} className="text-blue-600" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className={`text-xs font-medium ${isDark ? 'text-white' : 'text-slate-900'}`}>
                         {apt.patient}
                       </p>
-                      <p className="text-xs text-slate-500">{apt.type}</p>
+                      <p className="text-[11px] text-slate-500">{apt.type}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 flex-shrink-0 ml-2">
-                    <span className={`inline-flex items-center gap-0.5 px-2 py-0.5 rounded text-xs font-semibold whitespace-nowrap ${
+                  <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                    <span className={`inline-flex items-center gap-0.5 px-2 py-0.5 rounded text-[11px] font-semibold whitespace-nowrap ${
                       apt.status === 'active'
                         ? isDark ? 'bg-emerald-500/10 text-emerald-400' : 'bg-emerald-100 text-emerald-700'
                         : isDark ? 'bg-blue-500/10 text-blue-400' : 'bg-blue-100 text-blue-700'
                     }`}>
                       {apt.status === 'active' ? '● Active' : '⏱ Upcoming'}
                     </span>
-                    <p className={`text-xs font-medium w-16 text-right ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                    <p className={`text-[11px] font-medium w-14 text-right ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
                       {apt.time}
                     </p>
                   </div>
@@ -350,14 +349,14 @@ export default function DoctorDashboard() {
           <div className={`rounded-lg border shadow-sm ${
             isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
           }`}>
-            <div className={`p-4 border-b ${isDark ? 'border-slate-800' : 'border-slate-200'}`}>
+            <div className={`p-3 border-b ${isDark ? 'border-slate-800' : 'border-slate-200'}`}>
               <h3 className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>
                 Quick Actions
               </h3>
             </div>
 
-            <div className="p-4 space-y-2">
-              <Link href="/doctor/diagnosis" className={`flex items-center gap-3 p-2.5 rounded-lg transition text-xs ${
+            <div className="p-3 space-y-2">
+              <Link href="/doctor/diagnosis" className={`flex items-center gap-3 p-2 rounded-lg transition text-xs ${
                 isDark
                   ? 'hover:bg-slate-800 bg-slate-800/50'
                   : 'hover:bg-slate-100 bg-slate-50'
@@ -367,11 +366,11 @@ export default function DoctorDashboard() {
                 </div>
                 <div className="flex-1">
                   <p className="text-xs font-medium">New Diagnosis</p>
-                  <p className="text-xs text-slate-500">Create report</p>
+                  <p className="text-[11px] text-slate-500">Create report</p>
                 </div>
               </Link>
 
-              <Link href="/doctor/patients" className={`flex items-center gap-3 p-2.5 rounded-lg transition text-xs ${
+              <Link href="/doctor/patients" className={`flex items-center gap-3 p-2 rounded-lg transition text-xs ${
                 isDark
                   ? 'hover:bg-slate-800 bg-slate-800/50'
                   : 'hover:bg-slate-100 bg-slate-50'
@@ -381,11 +380,11 @@ export default function DoctorDashboard() {
                 </div>
                 <div className="flex-1">
                   <p className="text-xs font-medium">Patient Records</p>
-                  <p className="text-xs text-slate-500">View history</p>
+                  <p className="text-[11px] text-slate-500">View history</p>
                 </div>
               </Link>
 
-              <Link href="/doctor/prescriptions" className={`flex items-center gap-3 p-2.5 rounded-lg transition text-xs ${
+              <Link href="/doctor/prescriptions" className={`flex items-center gap-3 p-2 rounded-lg transition text-xs ${
                 isDark
                   ? 'hover:bg-slate-800 bg-slate-800/50'
                   : 'hover:bg-slate-100 bg-slate-50'
@@ -395,7 +394,7 @@ export default function DoctorDashboard() {
                 </div>
                 <div className="flex-1">
                   <p className="text-xs font-medium">Prescriptions</p>
-                  <p className="text-xs text-slate-500">Recent list</p>
+                  <p className="text-[11px] text-slate-500">Recent list</p>
                 </div>
               </Link>
             </div>
