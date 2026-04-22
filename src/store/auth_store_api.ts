@@ -5,7 +5,7 @@ import { persist } from "zustand/middleware"
 import Cookies from "js-cookie"
 import { apiClient } from "@/lib/api-client"
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3030/api/v1"
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://192.168.29.23:3030/api/v1"
 
 // Optional imports - gracefully handle if not available
 let setSession: ((token: string) => Promise<void>) | undefined

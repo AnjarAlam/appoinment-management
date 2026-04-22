@@ -4,36 +4,29 @@ import { apiClient } from "@/lib/api-client"
 
 export interface AdminUser {
   id: string
-  firstName: string
-  lastName: string
+  name: string
   email: string
-  phone?: string
-  role: "SUPER_ADMIN" | "ADMIN" | "HOSPITAL_ADMIN"
-  permissions: string[]
-  hospitalId?: string
+  hospitalId: string
+  isAdmin: boolean
+  isSystemAdmin: boolean
   isActive: boolean
-  createdAt: string
-  updatedAt: string
 }
 
 export interface UserListItem {
   id: string
-  firstName: string
-  lastName: string
+  name: string
   email: string
-  phone?: string
-  role: string
   isActive: boolean
-  createdAt: string
 }
 
 export interface AdminUserFilter {
   page?: number
   limit?: number
   search?: string
-  role?: string
   isActive?: boolean
   hospitalId?: string
+  sortBy?: string
+  sortOrder?: 'asc' | 'desc'
 }
 
 export interface UserListFilter {
@@ -80,9 +73,9 @@ export const useAdminUserStore = create<AdminUserStore>()(
       loading: false,
       error: null,
       roles: [
-        { value: "SUPER_ADMIN", label: "Super Admin" },
-        { value: "ADMIN", label: "Admin" },
-        { value: "HOSPITAL_ADMIN", label: "Hospital Admin" },
+        { value: "system_admin", label: "System Admin" },
+        { value: "admin", label: "Admin" },
+        { value: "hospital_admin", label: "Hospital Admin" },
       ],
 
       // Fetch admin users with filters
@@ -93,18 +86,19 @@ export const useAdminUserStore = create<AdminUserStore>()(
           if (filters.page) params.append("page", filters.page.toString())
           if (filters.limit) params.append("limit", filters.limit.toString())
           if (filters.search) params.append("search", filters.search)
-          if (filters.role) params.append("role", filters.role)
           if (filters.isActive !== undefined) params.append("isActive", filters.isActive.toString())
           if (filters.hospitalId) params.append("hospitalId", filters.hospitalId)
+          if (filters.sortBy) params.append("sortBy", filters.sortBy)
+          if (filters.sortOrder) params.append("sortOrder", filters.sortOrder)
 
           const queryString = params.toString()
-          const url = `/admin-user${queryString ? `?${queryString}` : ""}`
+          const url = `/system-admin/admin-users${queryString ? `?${queryString}` : ""}`
 
           const response = await apiClient.get<any>(url)
           console.log("✅ Admin users fetched:", response)
 
           set({
-            adminUsers: response.data || response.adminUsers || [],
+            adminUsers: response.data || [],
             totalItems: response.meta?.totalItems || 0,
             totalPages: response.meta?.totalPages || 0,
             currentPage: response.meta?.page || filters.page || 1,
@@ -153,14 +147,15 @@ export const useAdminUserStore = create<AdminUserStore>()(
         set({ loading: true, error: null })
         try {
           console.log("📝 Creating admin user:", data)
-          const response = await apiClient.post<AdminUser>("/admin-user", data)
-          console.log("✅ Admin user created:", response)
+          const res = await apiClient.post<AdminUser>("/admin-user", data)
+          const created = res.data as AdminUser
+          console.log("✅ Admin user created:", created)
 
           // Add to list
           const { adminUsers } = get()
-          set({ adminUsers: [response, ...adminUsers], loading: false })
+          set({ adminUsers: [created, ...adminUsers], loading: false })
 
-          return response
+          return created
         } catch (error: any) {
           const errorMsg = error.response?.data?.message || error.message || "Failed to create admin user"
           console.error("❌ Error creating admin user:", errorMsg)
@@ -174,17 +169,18 @@ export const useAdminUserStore = create<AdminUserStore>()(
         set({ loading: true, error: null })
         try {
           console.log("✏️ Updating admin user:", id, data)
-          const response = await apiClient.put<AdminUser>(`/admin-user/${id}`, data)
-          console.log("✅ Admin user updated:", response)
+          const res = await apiClient.put<AdminUser>(`/admin-user/${id}`, data)
+          const updated = res.data as AdminUser
+          console.log("✅ Admin user updated:", updated)
 
           // Update in list
           const { adminUsers } = get()
           set({
-            adminUsers: adminUsers.map((user) => (user.id === id ? response : user)),
+            adminUsers: adminUsers.map((user) => (user.id === id ? updated : user)),
             loading: false,
           })
 
-          return response
+          return updated
         } catch (error: any) {
           const errorMsg = error.response?.data?.message || error.message || "Failed to update admin user"
           console.error("❌ Error updating admin user:", errorMsg)
@@ -217,17 +213,18 @@ export const useAdminUserStore = create<AdminUserStore>()(
         set({ loading: true, error: null })
         try {
           console.log("🔄 Updating admin user status:", id, isActive)
-          const response = await apiClient.patch<AdminUser>(`/admin-user/${id}/status`, { isActive })
-          console.log("✅ Admin user status updated:", response)
+          const res = await apiClient.patch<AdminUser>(`/admin-user/${id}/status`, { isActive })
+          const updated = res.data as AdminUser
+          console.log("✅ Admin user status updated:", updated)
 
           // Update in list
           const { adminUsers } = get()
           set({
-            adminUsers: adminUsers.map((user) => (user.id === id ? response : user)),
+            adminUsers: adminUsers.map((user) => (user.id === id ? updated : user)),
             loading: false,
           })
 
-          return response
+          return updated
         } catch (error: any) {
           const errorMsg = error.response?.data?.message || error.message || "Failed to update status"
           console.error("❌ Error updating status:", errorMsg)
@@ -241,19 +238,20 @@ export const useAdminUserStore = create<AdminUserStore>()(
         set({ loading: true, error: null })
         try {
           console.log("🔐 Updating permissions:", id, permissions)
-          const response = await apiClient.patch<AdminUser>(`/admin-user/${id}/permissions`, {
+          const res = await apiClient.patch<AdminUser>(`/admin-user/${id}/permissions`, {
             permissions,
           })
-          console.log("✅ Permissions updated:", response)
+          const updated = res.data as AdminUser
+          console.log("✅ Permissions updated:", updated)
 
           // Update in list
           const { adminUsers } = get()
           set({
-            adminUsers: adminUsers.map((user) => (user.id === id ? response : user)),
+            adminUsers: adminUsers.map((user) => (user.id === id ? updated : user)),
             loading: false,
           })
 
-          return response
+          return updated
         } catch (error: any) {
           const errorMsg = error.response?.data?.message || error.message || "Failed to update permissions"
           console.error("❌ Error updating permissions:", errorMsg)

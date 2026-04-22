@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosError, AxiosResponse } from "axios"
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3030/api/v1"
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://192.168.29.23:3030/api/v1"
 
 /**
  * Comprehensive API Client with:
@@ -178,51 +178,51 @@ class ApiClient {
     }
   }
 
-  // GET request
-  async get<T>(url: string, config?: any): Promise<T> {
+  // GET request - return full ApiResponse (data + meta) so callers can access meta
+  async get<T>(url: string, config?: any): Promise<ApiResponse<T>> {
     try {
       const response = await this.axiosInstance.get<any, AxiosResponse<ApiResponse<T>>>(url, config)
-      return response.data.data || response.data
+      return response.data
     } catch (error) {
       throw error
     }
   }
 
   // POST request
-  async post<T>(url: string, data?: any, config?: any): Promise<T> {
+  async post<T>(url: string, data?: any, config?: any): Promise<ApiResponse<T>> {
     try {
       const response = await this.axiosInstance.post<any, AxiosResponse<ApiResponse<T>>>(url, data, config)
-      return response.data.data || response.data
+      return response.data
     } catch (error) {
       throw error
     }
   }
 
   // PUT request
-  async put<T>(url: string, data?: any, config?: any): Promise<T> {
+  async put<T>(url: string, data?: any, config?: any): Promise<ApiResponse<T>> {
     try {
       const response = await this.axiosInstance.put<any, AxiosResponse<ApiResponse<T>>>(url, data, config)
-      return response.data.data || response.data
+      return response.data
     } catch (error) {
       throw error
     }
   }
 
   // PATCH request
-  async patch<T>(url: string, data?: any, config?: any): Promise<T> {
+  async patch<T>(url: string, data?: any, config?: any): Promise<ApiResponse<T>> {
     try {
       const response = await this.axiosInstance.patch<any, AxiosResponse<ApiResponse<T>>>(url, data, config)
-      return response.data.data || response.data
+      return response.data
     } catch (error) {
       throw error
     }
   }
 
   // DELETE request
-  async delete<T>(url: string, config?: any): Promise<T> {
+  async delete<T>(url: string, config?: any): Promise<ApiResponse<T>> {
     try {
       const response = await this.axiosInstance.delete<any, AxiosResponse<ApiResponse<T>>>(url, config)
-      return response.data.data || response.data
+      return response.data
     } catch (error) {
       throw error
     }
