@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Search, Plus, Edit2, Trash2, Phone, MapPin, Calendar } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Search, Plus, Edit2, Trash2, Stethoscope } from 'lucide-react';
 
 interface Appointment {
   id: number;
@@ -14,6 +15,7 @@ interface Appointment {
 }
 
 export default function ReceptionAppointments() {
+  const router = useRouter();
   const [isDark, setIsDark] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -63,7 +65,7 @@ export default function ReceptionAppointments() {
     time: '',
     date: '',
     phone: '',
-    status: 'pending' as const,
+    status: 'pending' as 'confirmed' | 'pending' | 'completed' | 'cancelled',
   });
 
   useEffect(() => {
@@ -144,24 +146,24 @@ export default function ReceptionAppointments() {
         
         {/* Header */}
         <div className="mb-6">
-          <h1 className={`text-3xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+          <h1 className={`text-2xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
             Appointments
           </h1>
-          <p className={`text-sm mt-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+          <p className={`text-xs mt-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
             Manage and schedule patient appointments
           </p>
         </div>
 
         {/* Search and Filters */}
-        <div className="flex flex-col md:flex-row gap-4 mb-6">
+        <div className="flex flex-col md:flex-row gap-3 mb-6">
           <div className="flex-1 relative">
-            <Search size={18} className={`absolute left-3 top-1/2 -translate-y-1/2 ${isDark ? 'text-slate-400' : 'text-slate-400'}`} />
+            <Search size={16} className={`absolute left-3 top-1/2 -translate-y-1/2 ${isDark ? 'text-slate-400' : 'text-slate-400'}`} />
             <input
               type="text"
               placeholder="Search patient or doctor..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className={`w-full pl-10 pr-4 py-2.5 rounded-2xl text-sm focus:outline-none transition-all
+              className={`w-full pl-10 pr-4 py-2 rounded-lg text-xs focus:outline-none transition-all
                 ${isDark
                   ? 'bg-slate-800 border border-slate-700 focus:border-blue-600 text-slate-100 placeholder-slate-500'
                   : 'bg-white border border-slate-200 focus:border-blue-600 text-slate-900 placeholder-slate-500'
@@ -172,7 +174,7 @@ export default function ReceptionAppointments() {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className={`px-4 py-2.5 rounded-2xl text-sm font-medium focus:outline-none transition-all
+            className={`px-3 py-2 rounded-lg text-xs font-medium focus:outline-none transition-all
               ${isDark
                 ? 'bg-slate-800 border border-slate-700 text-slate-100'
                 : 'bg-white border border-slate-200 text-slate-900'
@@ -187,14 +189,14 @@ export default function ReceptionAppointments() {
 
           <button
             onClick={handleAddClick}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-all"
+            className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-all"
           >
-            <Plus size={18} /> Add Appointment
+            <Plus size={16} /> Add
           </button>
         </div>
 
         {/* Appointments Table */}
-        <div className={`rounded-3xl border overflow-hidden transition-all ${
+        <div className={`rounded-2xl border overflow-hidden transition-all ${
           isDark
             ? 'bg-slate-950 border-slate-800'
             : 'bg-white border-slate-200'
@@ -203,22 +205,22 @@ export default function ReceptionAppointments() {
             <table className="w-full">
               <thead>
                 <tr className={`border-b ${isDark ? 'bg-slate-900/50 border-slate-800' : 'bg-slate-50 border-slate-200'}`}>
-                  <th className={`px-4 py-3 text-left text-xs font-semibold tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                  <th className={`px-3 py-2 text-left text-xs font-semibold tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
                     Patient Name
                   </th>
-                  <th className={`px-4 py-3 text-left text-xs font-semibold tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                  <th className={`px-3 py-2 text-left text-xs font-semibold tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
                     Doctor
                   </th>
-                  <th className={`px-4 py-3 text-left text-xs font-semibold tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                  <th className={`px-3 py-2 text-left text-xs font-semibold tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
                     Date & Time
                   </th>
-                  <th className={`px-4 py-3 text-left text-xs font-semibold tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                  <th className={`px-3 py-2 text-left text-xs font-semibold tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
                     Phone
                   </th>
-                  <th className={`px-4 py-3 text-left text-xs font-semibold tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                  <th className={`px-3 py-2 text-left text-xs font-semibold tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
                     Status
                   </th>
-                  <th className={`px-4 py-3 text-center text-xs font-semibold tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                  <th className={`px-3 py-2 text-center text-xs font-semibold tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
                     Actions
                   </th>
                 </tr>
@@ -230,36 +232,43 @@ export default function ReceptionAppointments() {
                       ? isDark ? 'bg-slate-950' : 'bg-slate-50'
                       : isDark ? 'bg-slate-900/50' : 'bg-white'
                   } hover:bg-slate-800/50 dark:hover:bg-slate-800/50 transition-all`}>
-                    <td className={`px-4 py-3 text-sm font-medium ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
+                    <td className={`px-3 py-2 text-xs font-medium ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
                       {apt.patientName}
                     </td>
-                    <td className={`px-4 py-3 text-sm ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                    <td className={`px-3 py-2 text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
                       {apt.doctorName}
                     </td>
-                    <td className={`px-4 py-3 text-sm ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                    <td className={`px-3 py-2 text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
                       {apt.date} {apt.time}
                     </td>
-                    <td className={`px-4 py-3 text-sm ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                    <td className={`px-3 py-2 text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
                       {apt.phone}
                     </td>
-                    <td className="px-4 py-3 text-sm">
-                      <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-semibold ${getStatusBadgeColor(apt.status)}`}>
+                    <td className="px-3 py-2 text-xs">
+                      <span className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${getStatusBadgeColor(apt.status)}`}>
                         {apt.status.charAt(0).toUpperCase() + apt.status.slice(1)}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-center">
-                      <div className="flex items-center justify-center gap-2">
+                    <td className="px-3 py-2 text-center">
+                      <div className="flex items-center justify-center gap-1.5">
+                        <button
+                          onClick={() => router.push(`/receptionist/pre-medical-test?patientName=${apt.patientName}&phone=${apt.phone}&appointmentId=${apt.id}`)}
+                          className="p-1.5 rounded-lg hover:bg-emerald-500/20 transition-all text-emerald-600 hover:text-emerald-700 text-xs font-medium flex items-center gap-1"
+                          title="Record Pre-Medical Test"
+                        >
+                          <Stethoscope size={14} /> Test
+                        </button>
                         <button
                           onClick={() => handleEdit(apt)}
-                          className="p-2 rounded-lg hover:bg-slate-700 dark:hover:bg-slate-700 transition-all text-blue-600 hover:text-blue-700"
+                          className="p-1.5 rounded-lg hover:bg-slate-700 dark:hover:bg-slate-700 transition-all text-blue-600 hover:text-blue-700"
                         >
-                          <Edit2 size={16} />
+                          <Edit2 size={14} />
                         </button>
                         <button
                           onClick={() => handleDelete(apt.id)}
-                          className="p-2 rounded-lg hover:bg-slate-700 dark:hover:bg-slate-700 transition-all text-red-600 hover:text-red-700"
+                          className="p-1.5 rounded-lg hover:bg-slate-700 dark:hover:bg-slate-700 transition-all text-red-600 hover:text-red-700"
                         >
-                          <Trash2 size={16} />
+                          <Trash2 size={14} />
                         </button>
                       </div>
                     </td>
@@ -274,22 +283,22 @@ export default function ReceptionAppointments() {
       {/* Add/Edit Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm">
-          <div className={`rounded-3xl shadow-2xl p-6 w-96 border transition-all ${
+          <div className={`rounded-2xl shadow-2xl p-5 w-96 border transition-all ${
             isDark
               ? 'bg-slate-950 border-slate-800'
               : 'bg-white border-slate-200'
           }`}>
-            <h2 className={`text-xl font-bold mb-4 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            <h2 className={`text-lg font-bold mb-4 ${isDark ? 'text-white' : 'text-slate-900'}`}>
               {editingId ? 'Edit Appointment' : 'New Appointment'}
             </h2>
 
-            <div className="space-y-3">
+            <div className="space-y-2.5">
               <input
                 type="text"
                 placeholder="Patient Name"
                 value={formData.patientName}
                 onChange={(e) => setFormData({ ...formData, patientName: e.target.value })}
-                className={`w-full px-4 py-2 rounded-xl text-sm focus:outline-none transition-all
+                className={`w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none transition-all
                   ${isDark
                     ? 'bg-slate-800 border border-slate-700 text-slate-100'
                     : 'bg-slate-100 border border-slate-200 text-slate-900'
@@ -300,7 +309,7 @@ export default function ReceptionAppointments() {
                 placeholder="Doctor Name"
                 value={formData.doctorName}
                 onChange={(e) => setFormData({ ...formData, doctorName: e.target.value })}
-                className={`w-full px-4 py-2 rounded-xl text-sm focus:outline-none transition-all
+                className={`w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none transition-all
                   ${isDark
                     ? 'bg-slate-800 border border-slate-700 text-slate-100'
                     : 'bg-slate-100 border border-slate-200 text-slate-900'
@@ -310,7 +319,7 @@ export default function ReceptionAppointments() {
                 type="date"
                 value={formData.date}
                 onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                className={`w-full px-4 py-2 rounded-xl text-sm focus:outline-none transition-all
+                className={`w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none transition-all
                   ${isDark
                     ? 'bg-slate-800 border border-slate-700 text-slate-100'
                     : 'bg-slate-100 border border-slate-200 text-slate-900'
@@ -320,7 +329,7 @@ export default function ReceptionAppointments() {
                 type="time"
                 value={formData.time}
                 onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-                className={`w-full px-4 py-2 rounded-xl text-sm focus:outline-none transition-all
+                className={`w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none transition-all
                   ${isDark
                     ? 'bg-slate-800 border border-slate-700 text-slate-100'
                     : 'bg-slate-100 border border-slate-200 text-slate-900'
@@ -331,7 +340,7 @@ export default function ReceptionAppointments() {
                 placeholder="Phone Number"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className={`w-full px-4 py-2 rounded-xl text-sm focus:outline-none transition-all
+                className={`w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none transition-all
                   ${isDark
                     ? 'bg-slate-800 border border-slate-700 text-slate-100'
                     : 'bg-slate-100 border border-slate-200 text-slate-900'
@@ -339,8 +348,8 @@ export default function ReceptionAppointments() {
               />
               <select
                 value={formData.status}
-                onChange={(e) => setFormData({ ...formData, status: e.target.value as any })}
-                className={`w-full px-4 py-2 rounded-xl text-sm focus:outline-none transition-all
+                onChange={(e) => setFormData({ ...formData, status: e.target.value as 'confirmed' | 'pending' | 'completed' | 'cancelled' })}
+                className={`w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none transition-all
                   ${isDark
                     ? 'bg-slate-800 border border-slate-700 text-slate-100'
                     : 'bg-slate-100 border border-slate-200 text-slate-900'
@@ -353,10 +362,10 @@ export default function ReceptionAppointments() {
               </select>
             </div>
 
-            <div className="flex gap-3 mt-6">
+            <div className="flex gap-2.5 mt-5">
               <button
                 onClick={() => setIsModalOpen(false)}
-                className={`flex-1 px-4 py-2 rounded-xl text-sm font-semibold transition-all
+                className={`flex-1 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all
                   ${isDark
                     ? 'bg-slate-800 text-slate-100 hover:bg-slate-700'
                     : 'bg-slate-200 text-slate-900 hover:bg-slate-300'
@@ -366,7 +375,7 @@ export default function ReceptionAppointments() {
               </button>
               <button
                 onClick={handleSubmit}
-                className="flex-1 px-4 py-2 rounded-xl text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-all"
+                className="flex-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-all"
               >
                 {editingId ? 'Update' : 'Create'}
               </button>

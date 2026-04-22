@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Search, Plus, Save, X, Heart, Droplet, Thermometer, Activity, Weight } from 'lucide-react';
 
 interface VitalRecord {
@@ -98,6 +99,18 @@ export default function PreMedicalTest() {
     window.addEventListener('themeChange', handleThemeChange);
     return () => window.removeEventListener('themeChange', handleThemeChange);
   }, []);
+
+  // If navigated from appointments with query params, prefill and open the modal
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    const pName = searchParams.get('patientName');
+    const phone = searchParams.get('phone');
+    if (pName) {
+      setFormData((prev) => ({ ...prev, patientName: pName, patientPhone: phone || prev.patientPhone }));
+      setEditingId(null);
+      setIsModalOpen(true);
+    }
+  }, [searchParams]);
 
   const filteredVitals = vitals.filter((v) =>
     v.patientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -242,7 +255,7 @@ export default function PreMedicalTest() {
                         <span className="text-sm">{vital.weight || '-'}</span>
                       </div>
                     </td>
-                    <td className="px-3 py-3 text-sm text-center">
+                    <td className="px-3 py-3 text-sm text-center text-slate-500">
                       <span className="text-sm">{vital.height || '-'}</span>
                     </td>
                     <td className="px-3 py-3 text-sm text-center">
@@ -318,13 +331,13 @@ export default function PreMedicalTest() {
             </div>
 
             {/* Modal Body */}
-            <div className="p-5 space-y-4">
+            <div className="p-4 space-y-3">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-medium mb-1 text-slate-400">Patient Name *</label>
                   <input
                     type="text"
-                    className={`w-full px-3 py-2 rounded-lg text-sm outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
+                    className={`w-full px-3 py-1.5 rounded-lg text-xs outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
                     value={formData.patientName}
                     onChange={(e) => setFormData({ ...formData, patientName: e.target.value })}
                     placeholder="Enter patient name"
@@ -334,7 +347,7 @@ export default function PreMedicalTest() {
                   <label className="block text-xs font-medium mb-1 text-slate-400">Phone Number</label>
                   <input
                     type="tel"
-                    className={`w-full px-3 py-2 rounded-lg text-sm outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
+                    className={`w-full px-3 py-1.5 rounded-lg text-xs outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
                     value={formData.patientPhone}
                     onChange={(e) => setFormData({ ...formData, patientPhone: e.target.value })}
                     placeholder="+91 XXXXX XXXXX"
@@ -348,7 +361,7 @@ export default function PreMedicalTest() {
                   <input
                     type="number"
                     step="0.1"
-                    className={`w-full px-3 py-2 rounded-lg text-sm outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
+                    className={`w-full px-3 py-1.5 rounded-lg text-xs outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
                     value={formData.weight}
                     onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
                     placeholder="e.g., 72.5"
@@ -358,7 +371,7 @@ export default function PreMedicalTest() {
                   <label className="text-xs font-medium mb-1 text-slate-400 flex items-center gap-2"><Heart size={14} /> BP (mmHg)</label>
                   <input
                     type="text"
-                    className={`w-full px-3 py-2 rounded-lg text-sm outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
+                    className={`w-full px-3 py-1.5 rounded-lg text-xs outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
                     value={formData.bp}
                     onChange={(e) => setFormData({ ...formData, bp: e.target.value })}
                     placeholder="e.g., 120/80"
@@ -372,7 +385,7 @@ export default function PreMedicalTest() {
                   <input
                     type="number"
                     step="0.1"
-                    className={`w-full px-3 py-2 rounded-lg text-sm outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
+                    className={`w-full px-3 py-1.5 rounded-lg text-xs outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
                     value={formData.height}
                     onChange={(e) => setFormData({ ...formData, height: e.target.value })}
                     placeholder="e.g., 172"
@@ -383,7 +396,7 @@ export default function PreMedicalTest() {
                   <input
                     type="number"
                     step="1"
-                    className={`w-full px-3 py-2 rounded-lg text-sm outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
+                    className={`w-full px-3 py-1.5 rounded-lg text-xs outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
                     value={formData.spO2}
                     onChange={(e) => setFormData({ ...formData, spO2: e.target.value })}
                     placeholder="e.g., 98"
@@ -396,7 +409,7 @@ export default function PreMedicalTest() {
                   <label className="text-xs font-medium mb-1 text-slate-400 flex items-center gap-2"><Droplet size={14} /> Blood Sugar (mg/dL)</label>
                   <input
                     type="number"
-                    className={`w-full px-3 py-2 rounded-lg text-sm outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
+                    className={`w-full px-3 py-1.5 rounded-lg text-xs outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
                     value={formData.bloodSugar}
                     onChange={(e) => setFormData({ ...formData, bloodSugar: e.target.value })}
                     placeholder="e.g., 95"
@@ -408,7 +421,7 @@ export default function PreMedicalTest() {
                     type="number"
                     min="0"
                     max="10"
-                    className={`w-full px-3 py-2 rounded-lg text-sm outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
+                    className={`w-full px-3 py-1.5 rounded-lg text-xs outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
                     value={formData.painLevel}
                     onChange={(e) => setFormData({ ...formData, painLevel: e.target.value })}
                     placeholder="e.g., 2"
@@ -420,7 +433,7 @@ export default function PreMedicalTest() {
                 <label className="text-xs font-medium mb-1 text-slate-400 flex items-center gap-2"><Activity size={14} /> Pulse Rate (bpm)</label>
                 <input
                   type="number"
-                  className={`w-full px-3 py-2 rounded-lg text-sm outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
+                  className={`w-full px-3 py-1.5 rounded-lg text-xs outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
                   value={formData.pulseRate}
                   onChange={(e) => setFormData({ ...formData, pulseRate: e.target.value })}
                   placeholder="e.g., 72"
@@ -431,7 +444,7 @@ export default function PreMedicalTest() {
                 <div>
                   <label className="block text-xs font-medium mb-1 text-slate-400">Symptoms</label>
                   <input
-                    className={`w-full px-3 py-2 rounded-lg text-sm outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
+                    className={`w-full px-3 py-1.5 rounded-lg text-xs outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
                     value={formData.symptoms}
                     onChange={(e) => setFormData({ ...formData, symptoms: e.target.value })}
                     placeholder="e.g., cough, fever"
@@ -440,7 +453,7 @@ export default function PreMedicalTest() {
                 <div>
                   <label className="block text-xs font-medium mb-1 text-slate-400">Allergies</label>
                   <input
-                    className={`w-full px-3 py-2 rounded-lg text-sm outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
+                    className={`w-full px-3 py-1.5 rounded-lg text-xs outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
                     value={formData.allergies}
                     onChange={(e) => setFormData({ ...formData, allergies: e.target.value })}
                     placeholder="e.g., penicillin"
@@ -449,7 +462,7 @@ export default function PreMedicalTest() {
                 <div>
                   <label className="block text-xs font-medium mb-1 text-slate-400">Medications</label>
                   <input
-                    className={`w-full px-3 py-2 rounded-lg text-sm outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
+                    className={`w-full px-3 py-1.5 rounded-lg text-xs outline-none transition ${isDark ? 'bg-slate-800 border border-slate-700 text-white' : 'bg-slate-50 border border-slate-200 text-slate-900'}`}
                     value={formData.medications}
                     onChange={(e) => setFormData({ ...formData, medications: e.target.value })}
                     placeholder="e.g., aspirin"
@@ -470,17 +483,17 @@ export default function PreMedicalTest() {
             </div>
 
             {/* Modal Footer */}
-            <div className={`flex gap-3 py-4 px-5 border-t justify-end ${isDark ? 'border-slate-800' : 'border-slate-200'}`}>
+            <div className={`flex gap-2 py-3 px-4 border-t justify-end ${isDark ? 'border-slate-800' : 'border-slate-200'}`}>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className={`px-3 py-2 rounded-md text-sm transition ${isDark ? 'bg-slate-800 hover:bg-slate-700 text-white' : 'bg-slate-200 hover:bg-slate-300 text-slate-900'}`}
+                className={`px-3 py-1.5 rounded-md text-xs transition ${isDark ? 'bg-slate-800 hover:bg-slate-700 text-white' : 'bg-slate-200 hover:bg-slate-300 text-slate-900'}`}
               >
                 Cancel
               </button>
               <button
                 onClick={handleSave}
                 disabled={!formData.patientName.trim()}
-                className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm bg-emerald-600 text-white hover:bg-emerald-700 transition ${!formData.patientName.trim() ? 'opacity-60 cursor-not-allowed hover:bg-emerald-600' : ''}`}
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs bg-emerald-600 text-white hover:bg-emerald-700 transition ${!formData.patientName.trim() ? 'opacity-60 cursor-not-allowed hover:bg-emerald-600' : ''}`}
               >
                 <Save size={14} /> Save Vitals
               </button>

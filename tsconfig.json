@@ -26,7 +26,7 @@
         "./src/*"
       ],
       "@/store/*": [
-        "./store/*"
+        "./src/store/*"
       ]
     },
     "target": "ES2017"

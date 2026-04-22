@@ -71,12 +71,28 @@ html, body, #__next {
 
 html {
   color-scheme: dark;
+  /* Hide scrollbar but keep scroll functionality */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+/* Hide scrollbar for webkit browsers (Chrome, Safari, Edge) */
+html::-webkit-scrollbar {
+  display: none;
 }
 
 body {
   @apply bg-slate-900 text-white antialiased;
   margin: 0;
   font-family: var(--font-ui);
+  overflow-y: scroll;
+  /* Hide scrollbar but keep scroll functionality */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
 
 a { @apply text-sky-400 hover:text-sky-300; }
@@ -86,6 +102,18 @@ a { @apply text-sky-400 hover:text-sky-300; }
   height: 1px; width: 1px;
   overflow: hidden; clip: rect(1px, 1px, 1px, 1px);
   white-space: nowrap;
+}
+
+/* Hide scrollbar but keep scroll functionality */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 /* --------------------------------------------------

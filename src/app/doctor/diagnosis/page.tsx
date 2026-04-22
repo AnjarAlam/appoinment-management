@@ -672,7 +672,7 @@ Sanctuary Ayurvedic Clinic
             <h2 className={`text-sm font-semibold mb-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
               <Zap size={14} className="inline mr-1" /> Assign Therapy Templates
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-500">
               {suggestedTherapies.map((therapy) => (
                 <button
                   key={therapy.id}
@@ -698,11 +698,11 @@ Sanctuary Ayurvedic Clinic
               ))}
             </div>
             {assignedTherapies.length > 0 && (
-              <div className="mt-2 p-2 bg-slate-100 dark:bg-slate-800 rounded">
-                <p className="text-xs font-semibold mb-1">Assigned Therapies:</p>
+              <div className="mt-2 p-2 bg-slate-100 dark:bg-slate-800 rounded text-slate-500">
+                <p className="text-xs font-semibold mb-1">Suggested Therapies:</p>
                 <div className="space-y-1">
                   {assignedTherapies.map((therapy) => (
-                    <div key={therapy.id} className="flex justify-between items-start text-xs">
+                    <div key={therapy.id} className="flex justify-between items-start text-xs text-slate-500">
                       <div>
                         <p className="font-semibold">{therapy.title}</p>
                         <p className="text-slate-600">{therapy.frequency}</p>
